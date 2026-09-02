@@ -1,0 +1,25 @@
+# Python virtual environments
+venv/
+backend/venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Large datasets
+dataset/
+*.zip
+
+# Node.js
+frontend/node_modules/
+
+# Environment variables
+.env
+*.env
+
+# Jupyter temporary files
+.ipynb_checkpoints/
+# Model weights
+model/da_mil/weights/
+*.pth
+*.pt
