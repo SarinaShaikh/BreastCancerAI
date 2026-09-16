@@ -46,7 +46,7 @@ Any AI coding assistant working on this repository MUST:
 | Phase | Description | Status | Dependencies | Deliverable |
 |-------|-------------|--------|---------------|-------------|
 | 0 | Project Definition, Scope & Research Requirements | [x] Complete (2026-09-16 — deliverables approved by project owner; D-1/D-2 in effect) | None | Scope document `reports/phase0_scope.md` + `reports/research_questions.md` + `reports/phase0_literature_review.md` + `reports/phase0_decisions.md` |
-| 1 | Dataset Acquisition & Complete Dataset Audit | [~] In Progress (2026-09-16 — deliverables complete, validation 11/11 PASS; exit criteria pending: manifest git-commit + owner review) | Phase 0 | Dataset manifest + audit report (+ audit artifacts in `data/manifests/`, `tests/test_dataset_audit.py`) |
+| 1 | Dataset Acquisition & Complete Dataset Audit | [x] Complete (2026-09-16 — deliverables complete; manifests committed in `cec00cd`; audit report reviewed and **approved by the project owner**; validation 11/11 PASS) | Phase 0 | Dataset manifest + audit report (+ audit artifacts in `data/manifests/`, `tests/test_dataset_audit.py`) |
 | 2 | Data Cleaning, Image Integrity & Augmentation Leakage Analysis | [ ] Not Started | Phase 1 | Duplicate/near-duplicate report, cleaned manifest |
 | 3 | Data Organization & MIL Bag Definition | [ ] Not Started | Phase 2 | Bag definition spec + bag manifest |
 | 4 | Patient/Study-Level Data Splitting & Leakage Prevention | [ ] Not Started | Phase 3 | Train/val/test split files + leakage test results |
@@ -66,7 +66,7 @@ Any AI coding assistant working on this repository MUST:
 ## Overall Progress
 
 Phase 0: 100% — Complete (2026-09-16; deliverables approved by project owner)
-Phase 1: ~90% — deliverables complete, V-1…V-11 all PASS; exit criteria pending (manifest git-commit + owner review)
+Phase 1: 100% — Complete (2026-09-16; audit baseline approved by project owner)
 Phase 2: 0%
 Phase 3: 0%
 Phase 4: 0%
@@ -81,7 +81,7 @@ Phase 12: 0%
 Phase 13: 0%
 Phase 14: 0%
 
-**Overall: ~7%** (Phase 0 complete; Phase 1 deliverables complete and validated, pending exit criteria — 1/15 phases closed; no later phase started)
+**Overall: ~13%** (Phases 0–1 complete: 2/15 phases closed; no later phase started)
 
 ---
 
@@ -89,20 +89,20 @@ Phase 14: 0%
 
 Phase 1 — Dataset Acquisition & Complete Dataset Audit
 
-**Status:** [~] In Progress (2026-09-16) — acquisition, exhaustive audit, manifests, report and validation (V-1…V-11, 11/11 PASS) all complete; exit criteria pending: git commit of the manifests and owner review of the audit report. Phase 0 remains Complete (2026-09-16).
+**Status:** [x] Complete (2026-09-16) — deliverables reviewed and approved by the project owner; both exit criteria satisfied (manifests committed in `cec00cd`; owner sign-off recorded after the Phase 1 exit criteria). Phase 0 remains Complete (2026-09-16).
 
 ---
 
 ## Completed Milestones
 
 - **2026-09-16 — Phase 0 Complete.** Deliverables: `reports/phase0_scope.md` (objectives, boundaries, assumptions A-1…A-17, Phase 1 gate V-1…V-11, limitations, safety boundaries, success criteria), `reports/research_questions.md` (RQ-1…RQ-10, falsifiable, unanswered), `reports/phase0_literature_review.md` (tracking framework; surveys ongoing), `reports/phase0_decisions.md` (D-1 repository mapping, D-2 cross-modal taxonomy — both approved by the project owner and in effect). Both Phase 0 validation checks passed; exit criterion satisfied by project-owner approval of the deliverables as a whole. No dataset downloaded; no code written; Phases 1–14 untouched.
-- **2026-09-16 — Phase 1 deliverables complete (In Progress pending exit criteria).** Authorized by the owner; anonymous kagglehub acquisition of the authorized public dataset into gitignored `dataset/raw/` (D-1); exhaustive audit v1.1.2 (`src/data/audit.py`): 9,016 images (8,158 PNG / 858 JPG; 224×224 ×8,520, 227×227 ×496 = base images; RGB; 0 unreadable; 0 unparsed); labels directory-encoded (benign/malignant); **no** patient/study/lesion IDs, masks, annotations, metadata files or MRI data (D-2 state C → **T-5**); 496 filename-derived source keys (NOT verified identifiers); 8,520 files are explicit augmentation variants; 228 exact-duplicate groups (0 cross-split; but 1 byte-identical pair across splits via `benign (36)`); **2/496 source keys span the pre-existing train/val split** (`benign (36)`, `malignant (18)`) — a confirmed source-key-level leakage risk; 25,607 near-duplicate candidate pairs (candidates only). Manifests in `data/manifests/` (byte-identical across two runs); report `reports/phase1_dataset_audit.md`; validation `tests/test_dataset_audit.py` V-1…V-11 **11/11 PASS**. Phase 2–14 untouched; no model/MIL/training/split code created.
+- **2026-09-16 — Phase 1 Complete (owner-approved audit baseline).** Authorized by the owner; anonymous kagglehub acquisition of the authorized public dataset into gitignored `dataset/raw/` (D-1); exhaustive audit v1.1.2 (`src/data/audit.py`): 9,016 images (8,158 PNG / 858 JPG; 224×224 ×8,520, 227×227 ×496 = base images; RGB; 0 unreadable; 0 unparsed); labels directory-encoded (benign/malignant); **no** patient/study/lesion IDs, masks, annotations, metadata files or MRI data (D-2 state C → **T-5**); 496 filename-derived source keys (NOT verified identifiers); 8,520 files are explicit augmentation variants; 228 exact-duplicate groups (0 cross-split; but 1 byte-identical pair across splits via `benign (36)`); **2/496 source keys span the pre-existing train/val split** (`benign (36)`, `malignant (18)`) — a confirmed source-key-level leakage risk; 25,607 near-duplicate candidate pairs (candidates only; 996 cross-split pairs across 40 candidate groups). Manifests committed in `cec00cd`; report `reports/phase1_dataset_audit.md`; validation `tests/test_dataset_audit.py` V-1…V-11 **11/11 PASS**. **The project owner reviewed and approved the audit findings as the project's factual baseline (dataset accepted as-is, NOT as leakage-free); see the sign-off record in the Phase 1 section.** Phase 2–14 untouched; no model/MIL/training/split code created.
 
 ---
 
 ## Current Blockers
 
-- **Phase 1 is In Progress (2026-09-16)** — authorized by the owner; acquisition, audit, manifests, report and V-1…V-11 validation (11/11 PASS) are complete. Remaining exit criteria: git commit of the manifests to `data/manifests/` (needs owner go-ahead) and owner review of `reports/phase1_dataset_audit.md`.
+- **Phase 1 is Complete (2026-09-16)** — deliverables committed (`cec00cd`) and the audit report approved by the project owner; both exit criteria satisfied. Next: Phase 2 starts only on the owner's explicit instruction.
 - Dataset facts now VERIFIED by the Phase 1 audit (2026-09-16): 9,016 images; directory-encoded labels (benign/malignant); explicit augmentation lineage in filenames; **no** patient/study/lesion identifiers; **no** masks/annotations; **no** MRI data (D-2 state C → T-5). Bag definition, split unit, preprocessing, model configuration, MRI functionality and decision-support features must be based on the audit report, not on the former A-1…A-17 assumptions.
 - Repository layout: D-1 physically realized (2026-09-16) — `src/data/audit.py`, `data/manifests/`, `tests/`, gitignored `dataset/raw/`.
 - **New leakage finding requiring later-phase handling:** the dataset's pre-existing train/val split shares 2 of 496 filename-derived source keys (`benign (36)`, `malignant (18)`), including a byte-identical image pair across splits; 228 exact-duplicate groups exist. Split correction is later-phase work (Phase 2/4); raw data untouched.
@@ -300,7 +300,7 @@ A scope document that clearly separates prototype claims from clinical claims, p
 
 # Phase 1 — Dataset Acquisition & Complete Dataset Audit
 
-**Status:** [ ] Not Started
+**Status:** [x] **Complete** (2026-09-16) — deliverables committed (`cec00cd`), validation suite 11/11 PASS, both exit criteria satisfied, and the **project owner reviewed and approved the audit findings as the project's factual baseline** (sign-off record below). The dataset is accepted as audited — NOT as a leakage-free dataset.
 
 ### Objective
 Download the exact Kaggle dataset and produce a factual, verified, machine-readable account of its real structure — with zero assumptions.
@@ -333,7 +333,7 @@ Phase 0 complete.
 
 ### Files / Modules
 - `src/data/audit.py` (v1.1.2 — created; v1.1.2 = pre-commit privacy fix recording dataset root repo-relative in committed artifacts)
-- `data/manifests/dataset_manifest.csv` (9,016 rows — created; **not yet git-committed**)
+- `data/manifests/dataset_manifest.csv` (9,016 rows — created; **committed in `cec00cd`**)
 - `reports/phase1_dataset_audit.md` (created)
 - `data/manifests/near_duplicate_candidates.csv`, `data/manifests/source_key_overlap.csv`, `data/manifests/audit_summary.json`, `data/manifests/dataset_source.json` (created — additional audit artifacts)
 - `tests/test_dataset_audit.py` (created — V-1…V-11 validation suite, standalone or pytest)
@@ -349,8 +349,19 @@ Phase 0 complete.
 - Additional (beyond roadmap minimum): full suite `tests/test_dataset_audit.py` — V-1…V-11, **11/11 PASS** (report §14).
 
 ### Exit Criteria
-- [x] Audit report finalized and reviewed. → Report finalized 2026-09-16 (self-reviewed + validated 11/11); **owner review pending**.
-- [ ] Manifest committed to `data/manifests/`. → Files **created** on disk and reproducible, but **not yet git-committed** — awaiting owner go-ahead to make the Phase 1 commit.
+- [x] Audit report finalized and reviewed. → **SATISFIED 2026-09-16**: report finalized and validated (11/11 PASS), then reviewed and **approved by the project owner** the same day (sign-off record below).
+- [x] Manifest committed to `data/manifests/`. → **SATISFIED 2026-09-16**: all five manifests + report + audit code + tests committed in `cec00cd` ("Phase 1: dataset audit and leakage analysis").
+
+### Project-Owner Sign-off (2026-09-16) — Phase 1 audit baseline
+The project owner reviewed `reports/phase1_dataset_audit.md` and approved the Phase 1 dataset acquisition and audit findings **as the factual baseline for the project**, explicitly recording:
+
+- The dataset is accepted as the audited research starting point, **NOT as a leakage-free dataset**.
+- The two cross-split inferred source-key overlaps remain documented: `benign (36)` and `malignant (18)`.
+- The 996 cross-split near-duplicate candidate pairs across 40 candidate groups remain documented (candidates, not confirmed duplicates).
+- No verified patient/study/lesion identifiers were found; filename-derived source keys must **never** be represented as verified patient identifiers.
+- MRI validation remains unavailable under **D-2 State C / T-5**.
+- No raw images are deleted, moved, relabeled, or silently repaired as part of Phase 1.
+- Any future leakage correction or split redesign must occur in its designated later phase and **preserve the original audit evidence** (manifests, report, raw data).
 
 ### Potential Issues / Risks
 - Kaggle dataset structure may differ from its description; do not trust the Kaggle description text over direct inspection.
