@@ -1,4 +1,24 @@
 # Project Progress
+# AI DEVELOPMENT INSTRUCTIONS
+
+This file is the authoritative development roadmap for this project.
+
+Any AI coding assistant working on this repository MUST:
+
+1. Read this file before making changes.
+2. Work only on the currently authorized phase.
+3. Never skip phases.
+4. Never assume unverified dataset metadata.
+5. Never fabricate medical data.
+6. Never fabricate patient/study IDs.
+7. Never fabricate MRI data or reports.
+8. Never claim clinical validation.
+9. Never use test data for tuning.
+10. Never introduce data leakage.
+11. Run relevant validation/tests before declaring a phase complete.
+12. Update PROGRESS.md only when the phase exit criteria have genuinely been satisfied.
+13. Stop after the requested phase and wait for further instructions.
+14. Preserve existing repository structure unless a change is necessary.
 
 **Project Title:** Predicting Breast Cancer from Ultrasound Images with Cross-Modal Validation using Dual Attention Multiple Instance Learning
 
@@ -16,6 +36,8 @@
 **Known description (per Kaggle listing, unverified until inspected):** Contains ultrasound images labeled benign/malignant; images have been augmented using rotation and sharpening.
 
 > ⚠️ **Dataset Assumption Policy:** No claim about patient IDs, study IDs, MRI reports, lesion masks, or any metadata beyond raw images + benign/malignant class folders is to be treated as true until PHASE 1 dataset audit confirms it by direct inspection of the downloaded files. All such fields are UNVERIFIED until then.
+>
+> **Audit status (2026-09-16):** dataset downloaded and exhaustively audited — see `reports/phase1_dataset_audit.md` and `data/manifests/audit_summary.json`. Headline: 9,016 images; the listing's augmentation note is confirmed by filenames, but the dataset also ships a pre-existing train/val split, and it contains **no** metadata files, **no** patient/study/lesion IDs, **no** masks/annotations and **no** MRI data (D-2 state C → T-5).
 
 ---
 
@@ -23,8 +45,8 @@
 
 | Phase | Description | Status | Dependencies | Deliverable |
 |-------|-------------|--------|---------------|-------------|
-| 0 | Project Definition, Scope & Research Requirements | [ ] Not Started | None | Scope document (this file, Phase 0 section) |
-| 1 | Dataset Acquisition & Complete Dataset Audit | [ ] Not Started | Phase 0 | Dataset manifest + audit report |
+| 0 | Project Definition, Scope & Research Requirements | [x] Complete (2026-09-16 — deliverables approved by project owner; D-1/D-2 in effect) | None | Scope document `reports/phase0_scope.md` + `reports/research_questions.md` + `reports/phase0_literature_review.md` + `reports/phase0_decisions.md` |
+| 1 | Dataset Acquisition & Complete Dataset Audit | [~] In Progress (2026-09-16 — deliverables complete, validation 11/11 PASS; exit criteria pending: manifest git-commit + owner review) | Phase 0 | Dataset manifest + audit report (+ audit artifacts in `data/manifests/`, `tests/test_dataset_audit.py`) |
 | 2 | Data Cleaning, Image Integrity & Augmentation Leakage Analysis | [ ] Not Started | Phase 1 | Duplicate/near-duplicate report, cleaned manifest |
 | 3 | Data Organization & MIL Bag Definition | [ ] Not Started | Phase 2 | Bag definition spec + bag manifest |
 | 4 | Patient/Study-Level Data Splitting & Leakage Prevention | [ ] Not Started | Phase 3 | Train/val/test split files + leakage test results |
@@ -43,8 +65,8 @@
 
 ## Overall Progress
 
-Phase 0: 0%
-Phase 1: 0%
+Phase 0: 100% — Complete (2026-09-16; deliverables approved by project owner)
+Phase 1: ~90% — deliverables complete, V-1…V-11 all PASS; exit criteria pending (manifest git-commit + owner review)
 Phase 2: 0%
 Phase 3: 0%
 Phase 4: 0%
@@ -59,29 +81,36 @@ Phase 12: 0%
 Phase 13: 0%
 Phase 14: 0%
 
-**Overall: 0%**
+**Overall: ~7%** (Phase 0 complete; Phase 1 deliverables complete and validated, pending exit criteria — 1/15 phases closed; no later phase started)
 
 ---
 
 ## Current Phase
 
-Phase 0 — Project Definition, Scope & Research Requirements
+Phase 1 — Dataset Acquisition & Complete Dataset Audit
 
-**Status:** [ ] Not Started
+**Status:** [~] In Progress (2026-09-16) — acquisition, exhaustive audit, manifests, report and validation (V-1…V-11, 11/11 PASS) all complete; exit criteria pending: git commit of the manifests and owner review of the audit report. Phase 0 remains Complete (2026-09-16).
 
 ---
 
 ## Completed Milestones
 
-None.
+- **2026-09-16 — Phase 0 Complete.** Deliverables: `reports/phase0_scope.md` (objectives, boundaries, assumptions A-1…A-17, Phase 1 gate V-1…V-11, limitations, safety boundaries, success criteria), `reports/research_questions.md` (RQ-1…RQ-10, falsifiable, unanswered), `reports/phase0_literature_review.md` (tracking framework; surveys ongoing), `reports/phase0_decisions.md` (D-1 repository mapping, D-2 cross-modal taxonomy — both approved by the project owner and in effect). Both Phase 0 validation checks passed; exit criterion satisfied by project-owner approval of the deliverables as a whole. No dataset downloaded; no code written; Phases 1–14 untouched.
+- **2026-09-16 — Phase 1 deliverables complete (In Progress pending exit criteria).** Authorized by the owner; anonymous kagglehub acquisition of the authorized public dataset into gitignored `dataset/raw/` (D-1); exhaustive audit v1.1.2 (`src/data/audit.py`): 9,016 images (8,158 PNG / 858 JPG; 224×224 ×8,520, 227×227 ×496 = base images; RGB; 0 unreadable; 0 unparsed); labels directory-encoded (benign/malignant); **no** patient/study/lesion IDs, masks, annotations, metadata files or MRI data (D-2 state C → **T-5**); 496 filename-derived source keys (NOT verified identifiers); 8,520 files are explicit augmentation variants; 228 exact-duplicate groups (0 cross-split; but 1 byte-identical pair across splits via `benign (36)`); **2/496 source keys span the pre-existing train/val split** (`benign (36)`, `malignant (18)`) — a confirmed source-key-level leakage risk; 25,607 near-duplicate candidate pairs (candidates only). Manifests in `data/manifests/` (byte-identical across two runs); report `reports/phase1_dataset_audit.md`; validation `tests/test_dataset_audit.py` V-1…V-11 **11/11 PASS**. Phase 2–14 untouched; no model/MIL/training/split code created.
 
 ---
 
 ## Current Blockers
 
-- Need to inspect actual Kaggle dataset structure.
-- Need to determine whether reliable patient/study identifiers exist.
-- Need to determine whether augmentation lineage can be identified.
+- **Phase 1 is In Progress (2026-09-16)** — authorized by the owner; acquisition, audit, manifests, report and V-1…V-11 validation (11/11 PASS) are complete. Remaining exit criteria: git commit of the manifests to `data/manifests/` (needs owner go-ahead) and owner review of `reports/phase1_dataset_audit.md`.
+- Dataset facts now VERIFIED by the Phase 1 audit (2026-09-16): 9,016 images; directory-encoded labels (benign/malignant); explicit augmentation lineage in filenames; **no** patient/study/lesion identifiers; **no** masks/annotations; **no** MRI data (D-2 state C → T-5). Bag definition, split unit, preprocessing, model configuration, MRI functionality and decision-support features must be based on the audit report, not on the former A-1…A-17 assumptions.
+- Repository layout: D-1 physically realized (2026-09-16) — `src/data/audit.py`, `data/manifests/`, `tests/`, gitignored `dataset/raw/`.
+- **New leakage finding requiring later-phase handling:** the dataset's pre-existing train/val split shares 2 of 496 filename-derived source keys (`benign (36)`, `malignant (18)`), including a byte-identical image pair across splits; 228 exact-duplicate groups exist. Split correction is later-phase work (Phase 2/4); raw data untouched.
+- Definition of "cross-modal validation": resolved and closed by owner-approved decision **D-2** (`reports/phase0_decisions.md` §2; T-1…T-5 taxonomy, evidence states A–E; expected primary-dataset outcome T-5 pending V-4).
+- Still open: Q-3 (empty scaffold files), Q-5 (README title), Q-6 (risk-estimation scope) — none blocks Phase 1; Q-7/Q-8 deliberately deferred until Phase 12/14 relevance.
+- RESOLVED (2026-09-16) — Kaggle dataset structure inspected: pre-existing train/val split; classes benign/malignant; 9,016 images (8,158 PNG / 858 JPG).
+- RESOLVED (2026-09-16) — no reliable patient/study/lesion identifiers exist anywhere in the dataset; the finest defensible grouping unit is the filename-derived **source key** (496 keys; explicitly NOT a verified patient ID).
+- RESOLVED (2026-09-16) — augmentation lineage is identifiable: filenames encode rotated1/rotated2/rotated32/sharpened chains (8,520 augmented variants of 496 base images); 228 exact md5-duplicate groups; 25,607 near-duplicate candidate pairs (candidates only).
 - Need to determine how MIL bags can legitimately be constructed.
 - Need to determine availability of paired MRI data.
 - Need to determine whether an external MRI dataset/source is required.
@@ -122,6 +151,9 @@ The following are **candidate** research contributions. None are to be claimed a
 7. Explainable clinical decision support.
 
 **Literature Review Task (tracked under Phase 0 tasks):**
+
+> Tracking begun 2026-09-16: `reports/phase0_literature_review.md` (topic dossiers, search protocol, evidence schema, unfilled novelty-positioning matrix). **No search has been performed and no prior work has been assessed**, so every box below remains unticked and every item above remains "to be verified". Absence of a hit in a future search is not evidence of novelty, and no item may be presented as novel or state-of-the-art.
+
 - [ ] Survey CNN-based breast ultrasound classifiers.
 - [ ] Survey transfer-learning approaches for breast ultrasound.
 - [ ] Survey MIL approaches in medical imaging.
@@ -199,7 +231,28 @@ Mandatory automated tests across the project:
 
 # Phase 0 — Project Definition, Scope & Research Requirements
 
-**Status:** [ ] Not Started
+**Status:** [x] **Complete** (2026-09-16) — deliverables drafted, both validation checks passed, all tasks done, and the **project owner approved the Phase 0 deliverables as a whole** on 2026-09-16 (decisions D-1/D-2 approved separately the same day). See the Phase 0 Progress Note and the Exit Criteria record below. Literature surveys remain deliberately open as ongoing work; Phase 1 may begin only on the owner's explicit instruction.
+
+### Phase 0 Progress Note (recorded 2026-09-16)
+
+**Deliverables drafted:**
+- `reports/phase0_scope.md` — objectives (technical + research), scope boundaries, intended input/output, prediction targets, research-prototype vs. clinically-validated distinction, assumptions (A-1…A-17, all UNVERIFIED), Phase 1 verification requirements (V-1…V-11), known limitations, MRI uncertainty, identifier uncertainty, bag-construction uncertainty, medical AI safety boundaries, non-negotiable rules, technical/project success criteria, completion criteria, literature requirements, and open decisions Q-1…Q-8.
+- `reports/research_questions.md` — 10 falsifiable research questions (RQ-1…RQ-10) with null hypotheses, refutation conditions, required evidence and threats to validity. **No question is answered.**
+- `reports/phase0_literature_review.md` — literature-review tracking framework (topic dossiers, search protocol, evidence schema, unfilled novelty-positioning matrix). **No literature search has been performed.**
+
+**Validation checks:**
+- Scope document contains no clinical deployment claims — PASS `reports/phase0_scope.md` §3, §4, §12, §16.
+- Research questions are falsifiable/testable — PASS `reports/research_questions.md` §3.
+
+**Exit criteria: SATISFIED (2026-09-16).** "Documented and approved by project team/advisor" — documented via `reports/phase0_scope.md`, `reports/research_questions.md`, `reports/phase0_literature_review.md`, `reports/phase0_decisions.md`; approved by the **project owner** (approval authority confirmed sufficient — no external advisor/reviewer approval required; see `reports/phase0_decisions.md` §4). Both validation checks passed; all 13 tasks complete. **Phase 0 is Complete.** Per the roadmap's stop-after-phase rule and the owner's instruction, Phase 1 has NOT been started and awaits the owner's explicit prompt.
+
+**Phase 1 gate:** every dataset assumption recorded in Phase 0 (A-1…A-17) is UNVERIFIED. Phase 1 must verify V-1…V-11 **before** any bag definition, split unit, preprocessing, model configuration, MRI functionality or decision-support feature is finalised. Where a verification fails, the dependent capability must be documented as unavailable — never approximated, simulated or assumed.
+
+**Decision status (updated 2026-09-16):** Q-1 (D-1) and Q-4 (D-2) — **approved by the project owner**; in effect. Q-2 — resolved: project-owner approval is sufficient for project-level technical decisions, and the owner approved the Phase 0 deliverables as a whole on 2026-09-16. Q-7 and Q-8 — **deliberately deferred by owner instruction** until synthetic MRI or an external MRI dataset actually becomes relevant (expected Phase 12/14). Q-3, Q-5, Q-6 — still open. See `reports/phase0_scope.md` §24 and `reports/phase0_decisions.md` §4.
+
+**Blocker-resolution record (2026-09-16):** Q-1 and Q-4 have been investigated and resolved at specification level in `reports/phase0_decisions.md` — D-1 (repository structure mapping; raw data → gitignored `dataset/raw/`, research code → `src/`, committed manifests → `data/manifests/`, ML model code → existing `model/`, app/UI → existing `backend/`+`frontend/`) and D-2 (cross-modal validation defined per evidence state A–E under the T-1…T-5 taxonomy; expected primary-dataset outcome is T-5, pending Phase 1 verification V-4). **Both decisions were approved by the project owner on 2026-09-16 and are now in effect as the project's working decisions** (approval recorded in `reports/phase0_decisions.md` §4). No directory, file, manifest or dataset change has been made for either decision yet — D-1 takes physical effect when Phase 1 creates files under the approved mapping, and all roadmap paths in this document remain as written (D-1 is a mapping, not a rename).
+
+**Phase 0 closure record (2026-09-16):** with D-1/D-2 approved, both Phase 0 validation checks passed, all 13 Phase 0 tasks complete, and the **project owner's approval of the Phase 0 deliverables as a whole** received the same day, the exit criterion ("documented and approved by project team/advisor") is satisfied with the project owner as the approval authority. **Phase 0 is Complete.** Literature surveys remain deliberately open as ongoing work. Per the roadmap's stop-after-phase rule and the owner's instruction, **Phase 1 has not been started** and awaits the owner's explicit prompt.
 
 ### Objective
 Establish a precise, honest, and bounded definition of what this project will and will not do, before any code or data work begins.
@@ -211,33 +264,34 @@ Medical AI projects fail credibility when scope is vague or overstated. Defining
 None.
 
 ### Tasks
-- [ ] Write formal objectives (technical + research).
-- [ ] Write research questions (e.g., "Does dual attention improve bag-level classification over single-attention MIL and non-MIL baselines on this dataset?").
-- [ ] Define input: ultrasound image(s), optionally grouped by patient/study.
-- [ ] Define output: benign/malignant prediction, confidence score, attention-based evidence, optional risk category, optional MRI concordance status.
-- [ ] Define prediction target(s): image-level, and bag-level (patient/study) where dataset structure supports it.
-- [ ] Define scope boundaries: research prototype only, not a diagnostic device, not a treatment engine.
-- [ ] Document assumptions (to be revisited/verified in Phase 1): e.g., dataset is image-only until proven otherwise.
-- [ ] Document known limitations: single public dataset, likely no MRI pairing, likely no patient IDs, augmented images already embedded in the dataset.
-- [ ] Define medical AI safety boundaries (see Non-Negotiable Rules above).
-- [ ] Define success criteria (technical): e.g., MIL model outperforms non-MIL baseline on sensitivity/specificity/AUC on a leakage-free test set.
-- [ ] Define success criteria (project): completed phases, reproducibility, documented limitations, working demo.
-- [ ] Explicitly write the "Research Prototype vs. Clinically Validated System" distinction into the report/README.
-- [ ] Begin literature review tracking (see Novelty section tasks above).
+- [x] Write formal objectives (technical + research). → Done: `reports/phase0_scope.md` §5 (TO-1…TO-13), §6 (RO-1…RO-7).
+- [x] Write research questions (e.g., "Does dual attention improve bag-level classification over single-attention MIL and non-MIL baselines on this dataset?"). → Done: `reports/research_questions.md` RQ-1…RQ-10; operationalised as RQ-1/RQ-2. No question answered.
+- [x] Define input: ultrasound image(s), optionally grouped by patient/study. → Done: `reports/phase0_scope.md` §7 (grouping key UNVERIFIED, see §18).
+- [x] Define output: benign/malignant prediction, confidence score, attention-based evidence, optional risk category, optional MRI concordance status. → Done: `reports/phase0_scope.md` §8 (risk category and concordance status are conditional outputs).
+- [x] Define prediction target(s): image-level, and bag-level (patient/study) where dataset structure supports it. → Done: `reports/phase0_scope.md` §9 (bag-level conditional on Phase 1/2/3; patient/study-level may be impossible).
+- [x] Define scope boundaries: research prototype only, not a diagnostic device, not a treatment engine. → Done: `reports/phase0_scope.md` §11, §12.
+- [x] Document assumptions (to be revisited/verified in Phase 1): e.g., dataset is image-only until proven otherwise. → Done: `reports/phase0_scope.md` §13 (A-1…A-17, all UNVERIFIED), §14 (V-1…V-11).
+- [x] Document known limitations: single public dataset, likely no MRI pairing, likely no patient IDs, augmented images already embedded in the dataset. → Done: `reports/phase0_scope.md` §15.
+- [x] Define medical AI safety boundaries (see Non-Negotiable Rules above). → Done: `reports/phase0_scope.md` §16; rules reproduced in §20.
+- [x] Define success criteria (technical): e.g., MIL model outperforms non-MIL baseline on sensitivity/specificity/AUC on a leakage-free test set. → Done: `reports/phase0_scope.md` §21 (TS-1…TS-14; note TS-9 makes a null result acceptable — the criterion is honest comparison, not beating baselines).
+- [x] Define success criteria (project): completed phases, reproducibility, documented limitations, working demo. → Done: `reports/phase0_scope.md` §22.
+- [x] Explicitly write the "Research Prototype vs. Clinically Validated System" distinction into the report/README. → Done: `reports/phase0_scope.md` §4 (README alignment itself deferred to Phase 14 documentation, per Q-5).
+- [x] Begin literature review tracking (see Novelty section tasks above). → Tracking begun 2026-09-16 in `reports/phase0_literature_review.md`; the surveys themselves remain NOT STARTED and continue as ongoing work feeding Phases 6–12.
 
 ### Files / Modules
 - `reports/phase0_scope.md`
 - `reports/research_questions.md`
+- `reports/phase0_literature_review.md` (Phase 0 literature-review tracking)
 
 ### Expected Outputs
 A scope document that clearly separates prototype claims from clinical claims, plus an initial research question list.
 
 ### Validation Checks
-- [ ] Scope document reviewed and does not contain clinical deployment claims.
-- [ ] Research questions are falsifiable/testable.
+- [x] Scope document reviewed and does not contain clinical deployment claims. → PASS (2026-09-16): `reports/phase0_scope.md` §3, §4, §12, §16, §22 contain no clinical deployment claim; every capability is conditional and any capability whose precondition is unverified is marked unavailable rather than promised.
+- [x] Research questions are falsifiable/testable. → PASS (2026-09-16): `reports/research_questions.md` §3 gives every question a null hypothesis, a refutation condition and named observable evidence; RQ-4, RQ-8(d), RQ-9 and RQ-10 are explicitly flagged as partially answerable or unanswerable at the current data stage.
 
 ### Exit Criteria
-- [ ] Scope, objectives, and boundaries documented and approved by project team/advisor.
+- [x] Scope, objectives, and boundaries documented and approved by project team/advisor. → **SATISFIED 2026-09-16.** Documented: `reports/phase0_scope.md` (25 sections), `reports/research_questions.md`, `reports/phase0_literature_review.md`, `reports/phase0_decisions.md`. Approved: the **project owner approved the Phase 0 deliverables as a whole on 2026-09-16** (owner approval confirmed sufficient per `reports/phase0_decisions.md` §4 — no external advisor/reviewer approval required for project-level technical decisions). Both validation checks above had already passed. Phase 0 is therefore **Complete**; Phase 1 may begin only on the owner's explicit instruction.
 
 ### Potential Issues / Risks
 - Scope may need revision after Phase 1 dataset audit reveals actual data limitations (e.g., no patient IDs at all).
@@ -258,42 +312,45 @@ All downstream decisions (bag definition, splitting strategy, MRI feasibility) d
 Phase 0 complete.
 
 ### Tasks
-- [ ] Download dataset from https://www.kaggle.com/datasets/vuppalaadithyasairam/ultrasound-breast-images-for-breast-cancer into `data/raw/`.
-- [ ] Record dataset version/download date/checksum information.
-- [ ] Enumerate complete directory structure (all folders/subfolders).
-- [ ] Count total files, broken down by class folder (benign/malignant, or whatever classes actually exist).
-- [ ] Identify image formats present (jpg/png/etc.).
-- [ ] Extract image dimensions and color channel info (grayscale vs RGB) for a full or sampled pass.
-- [ ] Record exact class names as found (do not assume "benign"/"malignant" spelling/casing without checking).
-- [ ] Compute class distribution (benign vs malignant vs any other class found).
-- [ ] Analyze filename patterns for embedded metadata (IDs, augmentation tags, sequence numbers).
-- [ ] Check for duplicate files (exact byte-level duplicates).
-- [ ] Check for corrupted/unreadable image files.
-- [ ] Search for any accompanying metadata files (CSV, JSON, XML, README, license file) within the dataset download.
-- [ ] Determine whether patient IDs are present anywhere (explicitly search; do not assume absence or presence).
-- [ ] Determine whether study IDs are present.
-- [ ] Determine whether lesion IDs are present.
-- [ ] Determine whether masks/annotations are present.
-- [ ] Document explicitly what information is MISSING (this list is expected to be long given the dataset's known scope).
-- [ ] Build a machine-readable dataset manifest (CSV/Parquet/JSON) with one row per image recording: filepath, class label, format, dimensions, channels, file hash, and any recoverable naming-pattern metadata.
+- [x] Download dataset from https://www.kaggle.com/datasets/vuppalaadithyasairam/ultrasound-breast-images-for-breast-cancer into `data/raw/`. → Done: anonymous kagglehub download of the **public** dataset into gitignored `dataset/raw/` (D-1 mapping of `data/raw/`); no credentials used or required; no access controls bypassed.
+- [x] Record dataset version/download date/checksum information. → Done: `data/manifests/dataset_source.json` (handle, URL, version dir, acquisition note, manifest digest `225a6024…`); the only local timestamp is kagglehub's `1.complete` marker mtime, recorded explicitly as filesystem evidence, not a Kaggle-published date.
+- [x] Enumerate complete directory structure (all folders/subfolders). → Done: `.../versions/1/ultrasound breast classification/{train,val}/{benign,malignant}`; no other content (report §2).
+- [x] Count total files, broken down by class folder (benign/malignant, or whatever classes actually exist). → Done: 9,016 images — train/benign 4,074; train/malignant 4,042; val/benign 500; val/malignant 400.
+- [x] Identify image formats present (jpg/png/etc.). → Done: PNG 8,158, JPEG 858; no other formats; no non-image files inside the image root.
+- [x] Extract image dimensions and color channel info (grayscale vs RGB) for a full or sampled pass. → Done: **exhaustive** (no sampling needed): 224×224 ×8,520; 227×227 ×496 (exactly the 496 base images); RGB, 3 channels, all files.
+- [x] Record exact class names as found (do not assume "benign"/"malignant" spelling/casing without checking). → Done: exactly `benign` and `malignant`, directory-encoded.
+- [x] Compute class distribution (benign vs malignant vs any other class found). → Done: counts above; train near-balanced (4,074/4,042), val 500/400; no other classes exist.
+- [x] Analyze filename patterns for embedded metadata (IDs, augmentation tags, sequence numbers). → Done: grammar `"<class> (<idx>)[-<op>…]"`, ops ∈ {rotated1, rotated2, rotated32, sharpened}; 100% parse; 496 source keys; **no IDs of any kind**; source keys labelled `inferred_from_filename_not_verified_identifier`.
+- [x] Check for duplicate files (exact byte-level duplicates). → Done: exhaustive md5+sha256 — 8,780 unique md5; 228 exact-duplicate groups (464 files); 0 groups crossing the pre-existing split; md5-dup pairs have dHash distance 0 (cross-check).
+- [x] Check for corrupted/unreadable image files. → Done: **0 unreadable** (exhaustive decode of all 9,016).
+- [x] Search for any accompanying metadata files (CSV, JSON, XML, README, license file) within the dataset download. → Done: **none found**.
+- [x] Determine whether patient IDs are present anywhere (explicitly search; do not assume absence or presence). → Done: **confirmed absent** (report §5.1 explicit record).
+- [x] Determine whether study IDs are present. → Done: **confirmed absent**.
+- [x] Determine whether lesion IDs are present. → Done: **confirmed absent**.
+- [x] Determine whether masks/annotations are present. → Done: **confirmed absent** (and **MRI-related data confirmed absent** → D-2 state C / T-5).
+- [x] Document explicitly what information is MISSING (this list is expected to be long given the dataset's known scope). → Done: report §5.1 (explicit Confirmed-Present / Confirmed-Absent table), §10 (assumption outcomes), §11 (limitations).
+- [x] Build a machine-readable dataset manifest (CSV/Parquet/JSON) with one row per image recording: filepath, class label, format, dimensions, channels, file hash, and any recoverable naming-pattern metadata. → Done: `data/manifests/dataset_manifest.csv` — 9,016 rows (100% coverage), 22 fields incl. md5+sha256, dims, source_key, chain, lineage_class, source_key_status, duplicate/near-dup groups; byte-identical across two independent runs.
 
 ### Files / Modules
-- `src/data/audit.py`
-- `data/manifests/dataset_manifest.csv`
-- `reports/phase1_dataset_audit.md`
+- `src/data/audit.py` (v1.1.2 — created; v1.1.2 = pre-commit privacy fix recording dataset root repo-relative in committed artifacts)
+- `data/manifests/dataset_manifest.csv` (9,016 rows — created; **not yet git-committed**)
+- `reports/phase1_dataset_audit.md` (created)
+- `data/manifests/near_duplicate_candidates.csv`, `data/manifests/source_key_overlap.csv`, `data/manifests/audit_summary.json`, `data/manifests/dataset_source.json` (created — additional audit artifacts)
+- `tests/test_dataset_audit.py` (created — V-1…V-11 validation suite, standalone or pytest)
 
 ### Expected Outputs
 - Complete, factual dataset audit report.
 - Dataset manifest covering 100% of discovered image files.
 
 ### Validation Checks
-- [ ] Manifest row count equals actual file count on disk.
-- [ ] All class labels in manifest match actual folder/label structure.
-- [ ] Audit report contains an explicit "Confirmed Present" and "Confirmed Absent / Unknown" section for patient IDs, study IDs, lesion IDs, masks, and MRI-related data.
+- [x] Manifest row count equals actual file count on disk. → Verified: 9,016 == 9,016 (V-2; also path-set equality).
+- [x] All class labels in manifest match actual folder/label structure. → Verified: label = directory; recomputed from manifest in V-9.
+- [x] Audit report contains an explicit "Confirmed Present" and "Confirmed Absent / Unknown" section for patient IDs, study IDs, lesion IDs, masks, and MRI-related data. → Verified: report §5.1 table.
+- Additional (beyond roadmap minimum): full suite `tests/test_dataset_audit.py` — V-1…V-11, **11/11 PASS** (report §14).
 
 ### Exit Criteria
-- [ ] Audit report finalized and reviewed.
-- [ ] Manifest committed to `data/manifests/`.
+- [x] Audit report finalized and reviewed. → Report finalized 2026-09-16 (self-reviewed + validated 11/11); **owner review pending**.
+- [ ] Manifest committed to `data/manifests/`. → Files **created** on disk and reproducible, but **not yet git-committed** — awaiting owner go-ahead to make the Phase 1 commit.
 
 ### Potential Issues / Risks
 - Kaggle dataset structure may differ from its description; do not trust the Kaggle description text over direct inspection.

@@ -1,0 +1,300 @@
+{
+  "audit_version": "1.1.2",
+  "scan_timestamp_utc": "2026-09-16T11:27:03+00:00",
+  "dataset_handle": "vuppalaadithyasairam/ultrasound-breast-images-for-breast-cancer",
+  "dataset_root": "dataset/raw/.kagglehub_cache/datasets/vuppalaadithyasairam/ultrasound-breast-images-for-breast-cancer/versions/1",
+  "image_common_root": "dataset/raw/.kagglehub_cache/datasets/vuppalaadithyasairam/ultrasound-breast-images-for-breast-cancer/versions/1/ultrasound breast classification",
+  "root_found_via": "repo-local kagglehub cache (dataset/raw/.kagglehub_cache)",
+  "raw_data_immutable": true,
+  "coverage": "EXHAUSTIVE: every image file hashed (md5+sha256) and decoded (properties + dHash); no sampling",
+  "structure": {
+    "discovered_splits": [
+      "train",
+      "val"
+    ],
+    "discovered_class_dirs": [
+      "benign",
+      "malignant"
+    ],
+    "split_is_directory_encoded": true
+  },
+  "counts": {
+    "total_image_files": 9016,
+    "per_split_class": {
+      "train/benign": 4074,
+      "train/malignant": 4042,
+      "val/benign": 500,
+      "val/malignant": 400
+    },
+    "by_extension": {
+      "png": 8158,
+      "jpg": 858
+    },
+    "unreadable": 0,
+    "unreadable_files": [],
+    "unparsed_filenames": 0
+  },
+  "image_properties": {
+    "distinct_dimensions": 2,
+    "top_dimensions": [
+      {
+        "w": 224,
+        "h": 224,
+        "n": 8520
+      },
+      {
+        "w": 227,
+        "h": 227,
+        "n": 496
+      }
+    ],
+    "modes": {
+      "RGB": 9016
+    },
+    "formats": {
+      "PNG": 8158,
+      "JPEG": 858
+    },
+    "channel_counts": {
+      "3": 9016
+    }
+  },
+  "filename_grammar": {
+    "regex": "^(?P<cls>[A-Za-z]+) \\((?P<idx>\\d+)\\)(?P<chain>(?:-[A-Za-z0-9]+)*)$",
+    "known_ops": [
+      "rotated1",
+      "rotated2",
+      "rotated32",
+      "sharpened"
+    ],
+    "unparsed_count": 0,
+    "unparsed_examples": []
+  },
+  "duplicates": {
+    "method": "md5 over 100% of image files (exhaustive, no sampling)",
+    "files_hashed": 9016,
+    "unique_md5": 8780,
+    "exact_duplicate_groups": 228,
+    "files_in_exact_groups": 464,
+    "group_size_histogram": {
+      "2": 222,
+      "4": 2,
+      "3": 4
+    },
+    "cross_split_exact_groups": 0
+  },
+  "near_duplicates": {
+    "method": "64-bit dHash, 8x8-bit chunk index, exact Hamming on candidates",
+    "threshold_hamming": 7,
+    "completeness": "complete for Hamming distance <= 7; pairs at exactly 8 could in principle be missed (documented limitation)",
+    "status": "CANDIDATES ONLY - not confirmed duplicates; raw data untouched",
+    "images_hashed": 9016,
+    "candidate_pairs": 25607,
+    "candidate_distance_histogram": {
+      "0": 2288,
+      "1": 2714,
+      "2": 3067,
+      "3": 3296,
+      "4": 3412,
+      "5": 3426,
+      "6": 3622,
+      "7": 3782
+    },
+    "candidate_groups": 1011,
+    "files_in_candidate_groups": 8505,
+    "cross_split_candidate_groups": 40
+  },
+  "lineage": {
+    "identity_basis": "raw filename stem == canonical augmentation chain; md5 recorded as corroboration. Source keys are FILENAME-DERIVED and are NOT verified patient/study identifiers.",
+    "source_key_status": "inferred_from_filename_not_verified_identifier",
+    "distinct_source_keys": 496,
+    "source_keys_by_split": {
+      "train": 448,
+      "val": 50
+    },
+    "source_keys_with_base_variant_in_pool": 496,
+    "source_keys_without_base_variant": 0,
+    "cross_split_identity_groups": 0,
+    "shared_source_keys": 2,
+    "shared_source_key_detail": [
+      {
+        "source_key": "benign (36)",
+        "splits": [
+          "train",
+          "val"
+        ],
+        "train_files": [
+          "train/benign/benign (36)-rotated1-rotated2.png",
+          "train/benign/benign (36)-rotated1-sharpened.png",
+          "train/benign/benign (36)-rotated2-rotated1.png",
+          "train/benign/benign (36)-rotated2-rotated2.png",
+          "train/benign/benign (36)-rotated2-sharpened.png",
+          "train/benign/benign (36)-rotated2.jpg",
+          "train/benign/benign (36)-rotated2.png",
+          "train/benign/benign (36)-sharpened-rotated1.png",
+          "train/benign/benign (36)-sharpened-rotated2.png",
+          "train/benign/benign (36)-sharpened-sharpened.png",
+          "train/benign/benign (36)-sharpened.jpg",
+          "train/benign/benign (36)-sharpened.png"
+        ],
+        "val_files": [
+          "val/benign/benign (36)-rotated1-rotated1.png",
+          "val/benign/benign (36)-rotated1.jpg",
+          "val/benign/benign (36)-rotated1.png",
+          "val/benign/benign (36).png"
+        ],
+        "shared_chains_across_splits": [],
+        "has_exact_duplicate_member": false,
+        "exact_duplicate_member_files": []
+      },
+      {
+        "source_key": "malignant (18)",
+        "splits": [
+          "train",
+          "val"
+        ],
+        "train_files": [
+          "train/malignant/malignant (18)-rotated32-rotated1.png",
+          "train/malignant/malignant (18)-rotated32-rotated2.png",
+          "train/malignant/malignant (18)-rotated32-rotated32.png",
+          "train/malignant/malignant (18)-rotated32-sharpened.png",
+          "train/malignant/malignant (18)-rotated32.png",
+          "train/malignant/malignant (18)-sharpened-rotated1.png",
+          "train/malignant/malignant (18)-sharpened-rotated2.png",
+          "train/malignant/malignant (18)-sharpened-rotated32.png",
+          "train/malignant/malignant (18)-sharpened-sharpened.png",
+          "train/malignant/malignant (18)-sharpened.png"
+        ],
+        "val_files": [
+          "val/malignant/malignant (18)-rotated1-rotated1.png",
+          "val/malignant/malignant (18)-rotated1-rotated2.png",
+          "val/malignant/malignant (18)-rotated1-rotated32.png",
+          "val/malignant/malignant (18)-rotated1-sharpened.png",
+          "val/malignant/malignant (18)-rotated1.png",
+          "val/malignant/malignant (18)-rotated2-rotated1.png",
+          "val/malignant/malignant (18)-rotated2-rotated2.png",
+          "val/malignant/malignant (18)-rotated2-rotated32.png",
+          "val/malignant/malignant (18)-rotated2-sharpened.png",
+          "val/malignant/malignant (18)-rotated2.png",
+          "val/malignant/malignant (18).png"
+        ],
+        "shared_chains_across_splits": [],
+        "has_exact_duplicate_member": true,
+        "exact_duplicate_member_files": [
+          "train/malignant/malignant (18)-rotated32-rotated1.png",
+          "train/malignant/malignant (18)-rotated32-rotated32.png"
+        ]
+      }
+    ],
+    "lineage_class_counts": {
+      "confirmed": 8520,
+      "strong": 496
+    }
+  },
+  "preexisting_split": {
+    "detected": true,
+    "splits": [
+      "train",
+      "val"
+    ],
+    "creation_documentation_found": false,
+    "source_keys_shared_across_splits": 2,
+    "shared_source_key_detail": [
+      {
+        "source_key": "benign (36)",
+        "splits": [
+          "train",
+          "val"
+        ],
+        "train_files": [
+          "train/benign/benign (36)-rotated1-rotated2.png",
+          "train/benign/benign (36)-rotated1-sharpened.png",
+          "train/benign/benign (36)-rotated2-rotated1.png",
+          "train/benign/benign (36)-rotated2-rotated2.png",
+          "train/benign/benign (36)-rotated2-sharpened.png",
+          "train/benign/benign (36)-rotated2.jpg",
+          "train/benign/benign (36)-rotated2.png",
+          "train/benign/benign (36)-sharpened-rotated1.png",
+          "train/benign/benign (36)-sharpened-rotated2.png",
+          "train/benign/benign (36)-sharpened-sharpened.png",
+          "train/benign/benign (36)-sharpened.jpg",
+          "train/benign/benign (36)-sharpened.png"
+        ],
+        "val_files": [
+          "val/benign/benign (36)-rotated1-rotated1.png",
+          "val/benign/benign (36)-rotated1.jpg",
+          "val/benign/benign (36)-rotated1.png",
+          "val/benign/benign (36).png"
+        ],
+        "shared_chains_across_splits": [],
+        "has_exact_duplicate_member": false,
+        "exact_duplicate_member_files": []
+      },
+      {
+        "source_key": "malignant (18)",
+        "splits": [
+          "train",
+          "val"
+        ],
+        "train_files": [
+          "train/malignant/malignant (18)-rotated32-rotated1.png",
+          "train/malignant/malignant (18)-rotated32-rotated2.png",
+          "train/malignant/malignant (18)-rotated32-rotated32.png",
+          "train/malignant/malignant (18)-rotated32-sharpened.png",
+          "train/malignant/malignant (18)-rotated32.png",
+          "train/malignant/malignant (18)-sharpened-rotated1.png",
+          "train/malignant/malignant (18)-sharpened-rotated2.png",
+          "train/malignant/malignant (18)-sharpened-rotated32.png",
+          "train/malignant/malignant (18)-sharpened-sharpened.png",
+          "train/malignant/malignant (18)-sharpened.png"
+        ],
+        "val_files": [
+          "val/malignant/malignant (18)-rotated1-rotated1.png",
+          "val/malignant/malignant (18)-rotated1-rotated2.png",
+          "val/malignant/malignant (18)-rotated1-rotated32.png",
+          "val/malignant/malignant (18)-rotated1-sharpened.png",
+          "val/malignant/malignant (18)-rotated1.png",
+          "val/malignant/malignant (18)-rotated2-rotated1.png",
+          "val/malignant/malignant (18)-rotated2-rotated2.png",
+          "val/malignant/malignant (18)-rotated2-rotated32.png",
+          "val/malignant/malignant (18)-rotated2-sharpened.png",
+          "val/malignant/malignant (18)-rotated2.png",
+          "val/malignant/malignant (18).png"
+        ],
+        "shared_chains_across_splits": [],
+        "has_exact_duplicate_member": true,
+        "exact_duplicate_member_files": [
+          "train/malignant/malignant (18)-rotated32-rotated1.png",
+          "train/malignant/malignant (18)-rotated32-rotated32.png"
+        ]
+      }
+    ]
+  },
+  "mri": {
+    "scan_scope": "all file and directory names under the dataset root",
+    "vocabulary": [
+      "mri",
+      "mr_",
+      "_mr",
+      "-mr",
+      "dce",
+      "t1",
+      "t2",
+      "flair",
+      "dicom",
+      "*.dcm"
+    ],
+    "mri_hint_files": [],
+    "d2_evidence_state": "C (no MRI files found in the primary dataset -> T-5 Absence of MRI validation)",
+    "d2_label": "T-5",
+    "caveat": "File-layer evidence only; establishes no patient-level claims in either direction (D-2, reports/phase0_decisions.md section 2)."
+  },
+  "manifest_digest_sha256": "225a60247e6bdff7c8b86cdf209484aadfef47728784ab73b694465bf22549b9",
+  "warnings": [],
+  "warning_count": 0,
+  "outputs": [
+    "data/manifests\\dataset_manifest.csv",
+    "data/manifests\\near_duplicate_candidates.csv",
+    "data/manifests\\source_key_overlap.csv"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "kaggle_handle": "vuppalaadithyasairam/ultrasound-breast-images-for-breast-cancer",
+  "kaggle_url": "https://www.kaggle.com/datasets/vuppalaadithyasairam/ultrasound-breast-images-for-breast-cancer",
+  "version_dir": "1",
+  "dataset_root_relative": "dataset/raw/.kagglehub_cache/datasets/vuppalaadithyasairam/ultrasound-breast-images-for-breast-cancer/versions/1",
+  "acquisition_note": "kagglehub anonymous download of a PUBLIC dataset (no credentials used or required; no access controls bypassed); recorded by the Phase 1 session",
+  "download_completed_at_utc_marker_mtime": null,
+  "marker_mtime_caveat": "filesystem mtime of the kagglehub '1.complete' marker; used as acquisition-time evidence, not a Kaggle-published timestamp",
+  "image_file_count": 9016,
+  "total_image_bytes": 690967560,
+  "manifest_digest_sha256": "225a60247e6bdff7c8b86cdf209484aadfef47728784ab73b694465bf22549b9",
+  "digest_definition": "sha256 over 'path:bytes:md5\\n' lines, sorted by path",
+  "recorded_at_utc": "2026-09-16T11:27:04+00:00",
+  "audit_version": "1.1.2"
+}
