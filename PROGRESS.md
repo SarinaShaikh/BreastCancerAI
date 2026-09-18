@@ -47,8 +47,8 @@ Any AI coding assistant working on this repository MUST:
 |-------|-------------|--------|---------------|-------------|
 | 0 | Project Definition, Scope & Research Requirements | [x] Complete (2026-09-16 — deliverables approved by project owner; D-1/D-2 in effect) | None | Scope document `reports/phase0_scope.md` + `reports/research_questions.md` + `reports/phase0_literature_review.md` + `reports/phase0_decisions.md` |
 | 1 | Dataset Acquisition & Complete Dataset Audit | [x] Complete (2026-09-16 — deliverables complete; manifests committed in `cec00cd`; audit report reviewed and **approved by the project owner**; validation 11/11 PASS) | Phase 0 | Dataset manifest + audit report (+ audit artifacts in `data/manifests/`, `tests/test_dataset_audit.py`) |
-| 2 | Data Cleaning, Image Integrity & Augmentation Leakage Analysis | [x] Complete (2026-09-18 — all tasks complete; validation 11/11 PASS; human visual spot-check recorded, all sections Plausible; commit authorized-pending) | Phase 1 | Duplicate/near-duplicate report, cleaned manifest |
-| 3 | Data Organization & MIL Bag Definition | [ ] Not Started | Phase 2 | Bag definition spec + bag manifest |
+| 2 | Data Cleaning, Image Integrity & Augmentation Leakage Analysis | [x] Complete (2026-09-18 — all tasks complete; validation 11/11 PASS; human visual spot-check recorded, all sections Plausible; committed in `4e72199`) | Phase 1 | Duplicate/near-duplicate report, cleaned manifest |
+| 3 | Data Organization & MIL Bag Definition | [x] Complete (2026-09-18 — bag definition selected from evidence and documented; bag manifest built; validation 13/13 PASS; commit + owner review pending) | Phase 2 | Bag definition spec + bag manifest |
 | 4 | Patient/Study-Level Data Splitting & Leakage Prevention | [ ] Not Started | Phase 3 | Train/val/test split files + leakage test results |
 | 5 | Ultrasound Image Preprocessing & Augmentation Pipeline | [ ] Not Started | Phase 4 | Preprocessing pipeline + config file |
 | 6 | Baseline Deep Learning Models | [ ] Not Started | Phase 5 | Baseline model results |
@@ -68,7 +68,7 @@ Any AI coding assistant working on this repository MUST:
 Phase 0: 100% — Complete (2026-09-16; deliverables approved by project owner)
 Phase 1: 100% — Complete (2026-09-16; audit baseline approved by project owner)
 Phase 2: 100% — Complete (2026-09-18; all tasks + validation done; human visual spot-check recorded)
-Phase 3: 0%
+Phase 3: 100% — Complete (2026-09-18; bag definition documented; bag manifest built; validation 13/13 PASS)
 Phase 4: 0%
 Phase 5: 0%
 Phase 6: 0%
@@ -81,15 +81,15 @@ Phase 12: 0%
 Phase 13: 0%
 Phase 14: 0%
 
-**Overall: ~20%** (Phases 0–2 complete; Phase 3 Not Started; nothing later started)
+**Overall: ~27%** (Phases 0–3 complete; Phase 4 Not Started; nothing later started)
 
 ---
 
 ## Current Phase
 
-Phase 2 — Data Cleaning, Image Integrity & Augmentation Leakage Analysis
+Phase 3 — Data Organization & MIL Bag Definition
 
-**Status:** [x] Complete (2026-09-18) — all roadmap tasks implemented and validated (11/11 PASS); deliverables created (`reports/phase2_leakage_analysis.md`, `data/manifests/augmentation_groups.csv`, `ssim_crosscheck.csv`, `phase2_grouping_summary.json`, `src/preprocessing/*`, `tests/test_phase2_grouping.py`); human visual spot-check completed and recorded (all 10 sections Plausible). **Phase 2 git commit awaits owner authorization.** Phase 1 remains Complete (2026-09-16). Phase 0 remains Complete (2026-09-16). Phase 3 has NOT been started.
+**Status:** [x] Complete (2026-09-18) — bag definition formally selected from verified evidence (BAG = one Phase 2 `source_group_id`; INSTANCE = one image file of that source group; LABEL = the group's directory-encoded class); deliverables created (`src/mil/bag_definition.py`, `data/manifests/bag_manifest.csv`, `reports/phase3_bag_definition.md`, `tests/test_phase3_bags.py`); validation V3-1…V3-13 **13/13 PASS**; regeneration byte-identical across runs. **Phase 3 git commit awaits owner authorization.** Phases 0–2 remain Complete (Phase 2 committed in `4e72199`). Phase 4 has NOT been started.
 
 ---
 
@@ -97,14 +97,16 @@ Phase 2 — Data Cleaning, Image Integrity & Augmentation Leakage Analysis
 
 - **2026-09-16 — Phase 0 Complete.** Deliverables: `reports/phase0_scope.md` (objectives, boundaries, assumptions A-1…A-17, Phase 1 gate V-1…V-11, limitations, safety boundaries, success criteria), `reports/research_questions.md` (RQ-1…RQ-10, falsifiable, unanswered), `reports/phase0_literature_review.md` (tracking framework; surveys ongoing), `reports/phase0_decisions.md` (D-1 repository mapping, D-2 cross-modal taxonomy — both approved by the project owner and in effect). Both Phase 0 validation checks passed; exit criterion satisfied by project-owner approval of the deliverables as a whole. No dataset downloaded; no code written; Phases 1–14 untouched.
 - **2026-09-16 — Phase 1 Complete (owner-approved audit baseline).** Authorized by the owner; anonymous kagglehub acquisition of the authorized public dataset into gitignored `dataset/raw/` (D-1); exhaustive audit v1.1.2 (`src/data/audit.py`): 9,016 images (8,158 PNG / 858 JPG; 224×224 ×8,520, 227×227 ×496 = base images; RGB; 0 unreadable; 0 unparsed); labels directory-encoded (benign/malignant); **no** patient/study/lesion IDs, masks, annotations, metadata files or MRI data (D-2 state C → **T-5**); 496 filename-derived source keys (NOT verified identifiers); 8,520 files are explicit augmentation variants; 228 exact-duplicate groups (0 cross-split — *erratum 2026-09-18: this milestone originally added "1 byte-identical pair across splits via `benign (36)`"; exhaustive re-verification shows 0 cross-split byte-identical pairs; the executed audit data was always correct, and `reports/phase1_dataset_audit.md` §0/§6/§8 now carry the correction*); **2/496 source keys span the pre-existing train/val split** (`benign (36)`, `malignant (18)`) — a confirmed source-key-level leakage risk; 25,607 near-duplicate candidate pairs (candidates only; 996 cross-split pairs across 40 candidate groups). Manifests committed in `cec00cd`; report `reports/phase1_dataset_audit.md`; validation `tests/test_dataset_audit.py` V-1…V-11 **11/11 PASS**. **The project owner reviewed and approved the audit findings as the project's factual baseline (dataset accepted as-is, NOT as leakage-free); see the sign-off record in the Phase 1 section.** Phase 2–14 untouched; no model/MIL/training/split code created.
-- **2026-09-18 — Phase 2 implemented (human visual spot-check recorded; commit + owner sign-off pending).** *(A 2026-09-18 final review found and fixed two documentation misattributions: §5.2/§5.4 of the report and the corresponding notes here originally described the 977 cross-split cross-key pairs as spanning 72 key-pairs with a same-split example — executed CSVs show 19 distinct key-pairs and a genuinely cross-split example `benign (128)`↔`benign (30)`; the 72 count belongs to §5.3's 147 same-split mixed-key clusters. All executed artifacts were always correct; no report statistic other than these attributions changed.)* Grouping pipeline v1.0.0 (`src/preprocessing/duplicate_detection.py`, `src/preprocessing/perceptual_hash.py` reusing the Phase 1 audit module verbatim): all 9,016 images assigned to **496 `source_group_id` families** (confirmed-identity edges only: same filename source key ∪ same md5; label guard: 0 conflicts; candidates never merge groups); one high-confidence original candidate per group (496 chain-free 227×227 files) + 8,520 explicit `augmented_variant` files; 0 ungrouped/low-confidence; 228 exact-duplicate groups fully absorbed by lineage (464−228=236 redundant md5 merges — 100% agreement with filename evidence); **SSIM cross-validation** (Wang et al. 2004, numpy-only, deterministic) of all 25,607 Phase 1 candidate pairs — monotone agreement with dHash distance, 1,139 pairs (4.4%) SSIM<0.60 documented as over-grouping risk; **new leakage decomposition: 996 cross-split candidate pairs = 19 same-key + 977 cross-key** (spanning 19 distinct key-pairs, e.g. `benign (128)`[train]↔`benign (30)`[val] at dHash 0 — an additional leakage signal Phase 4 must test); content-purity check (filename-blind clusters): 147 mixed-key clusters, 0 mixed-class, 0 cross-split. Outputs: `data/manifests/augmentation_groups.csv`, `ssim_crosscheck.csv`, `phase2_grouping_summary.json`; report `reports/phase2_leakage_analysis.md`; validation `tests/test_phase2_grouping.py` V2-1…V2-11 **11/11 PASS**; 3 byte-identical pipeline runs; raw dataset re-hashed bit-identical (V2-10). Phase 1 artifacts digest-verified unchanged. No deletions/moves/renames of any image; no model/training/split code created; Phases 3–14 untouched.
+- **2026-09-18 — Phase 2 implemented (human visual spot-check recorded; artifacts committed in `4e72199`).** *(A 2026-09-18 final review found and fixed two documentation misattributions: §5.2/§5.4 of the report and the corresponding notes here originally described the 977 cross-split cross-key pairs as spanning 72 key-pairs with a same-split example — executed CSVs show 19 distinct key-pairs and a genuinely cross-split example `benign (128)`↔`benign (30)`; the 72 count belongs to §5.3's 147 same-split mixed-key clusters. All executed artifacts were always correct; no report statistic other than these attributions changed.)* Grouping pipeline v1.0.0 (`src/preprocessing/duplicate_detection.py`, `src/preprocessing/perceptual_hash.py` reusing the Phase 1 audit module verbatim): all 9,016 images assigned to **496 `source_group_id` families** (confirmed-identity edges only: same filename source key ∪ same md5; label guard: 0 conflicts; candidates never merge groups); one high-confidence original candidate per group (496 chain-free 227×227 files) + 8,520 explicit `augmented_variant` files; 0 ungrouped/low-confidence; 228 exact-duplicate groups fully absorbed by lineage (464−228=236 redundant md5 merges — 100% agreement with filename evidence); **SSIM cross-validation** (Wang et al. 2004, numpy-only, deterministic) of all 25,607 Phase 1 candidate pairs — monotone agreement with dHash distance, 1,139 pairs (4.4%) SSIM<0.60 documented as over-grouping risk; **new leakage decomposition: 996 cross-split candidate pairs = 19 same-key + 977 cross-key** (spanning 19 distinct key-pairs, e.g. `benign (128)`[train]↔`benign (30)`[val] at dHash 0 — an additional leakage signal Phase 4 must test); content-purity check (filename-blind clusters): 147 mixed-key clusters, 0 mixed-class, 0 cross-split. Outputs: `data/manifests/augmentation_groups.csv`, `ssim_crosscheck.csv`, `phase2_grouping_summary.json`; report `reports/phase2_leakage_analysis.md`; validation `tests/test_phase2_grouping.py` V2-1…V2-11 **11/11 PASS**; 3 byte-identical pipeline runs; raw dataset re-hashed bit-identical (V2-10). Phase 1 artifacts digest-verified unchanged. No deletions/moves/renames of any image; no model/training/split code created; Phases 3–14 untouched.
+- **2026-09-18 — Phase 3 Complete (bag definition; commit + owner review pending).** Candidates A (patient) / B (study) / C (lesion) formally rejected — Phase 1 exhaustively verified no patient/study/lesion identifiers or annotations exist and fabricating them is prohibited; Candidate E (image-as-bag-of-patches) evaluated but not selected (grouping is reliable and content-corroborated; no tiling implemented). **Selected: BAG = one Phase 2 `source_group_id` (source-image family); INSTANCE = one image file of that group; LABEL = the group's directory-encoded class (benign/malignant).** `src/mil/bag_definition.py` v1.0.0 builds `data/manifests/bag_manifest.csv` deterministically: 496 bags (286 benign / 210 malignant), 9,016 instances, sizes {14×1, 16×285, 21×209, 53×1} (min 14, max 53, mean 18.1774, median 16); `bag_id` = deterministic `grp-`→`bag-` mapping; instance membership `|`-joined with per-instance md5; `source_key_status=inferred_from_filename_not_verified_identifier` carried on every row; the 2 multi-split families (`benign (36)`, `malignant (18)`) remain SINGLE bags (V3-13). MIL hierarchy (bag→instances→features→attention→prediction) documented conceptually — features/attention/prediction NOT implemented. Report `reports/phase3_bag_definition.md`; validation `tests/test_phase3_bags.py` V3-1…V3-13 **13/13 PASS** (incl. raw-data re-hash, AST phase-boundary scan, 2-run byte-identical regeneration); Phase 1 V-11 artifact whitelist extended minimally (`bag_manifest.csv`) — all three suites green (11/11, 11/11, 13/13). No raw file modified; Phase 1/2 manifests unchanged; no splitting/preprocessing/model code created; Phases 4–14 untouched.
 
 ---
 
 ## Current Blockers
 
 - **Phase 1 is Complete (2026-09-16)** — deliverables committed (`cec00cd`) and the audit report approved by the project owner; both exit criteria satisfied.
-- **Phase 2 (2026-09-18)** — all tasks implemented and validated (V2-1…V2-11, 11/11 PASS); deliverables created; **human visual spot-check completed and recorded (all 10 sections Plausible, 2026-09-18)**; exit criteria: artifact commit + owner sign-off of `reports/phase2_leakage_analysis.md`.
+- **Phase 2 is Complete (2026-09-18)** — all tasks implemented and validated (V2-1…V2-11, 11/11 PASS); human visual spot-check completed and recorded (all 10 sections Plausible); artifacts committed in `4e72199`.
+- **Phase 3 (2026-09-18)** — bag definition complete and validated (V3-1…V3-13, 13/13 PASS); deliverables created; **exit criterion satisfied; pending Phase 3 commit + owner review** of `reports/phase3_bag_definition.md`.
 - **New Phase 2 leakage finding requiring Phase 4 handling:** the 996 cross-split near-duplicate candidate pairs decompose into 19 same-key pairs (the known `benign (36)`/`malignant (18)` leak) and **977 cross-key pairs** — near-identical content from DIFFERENT source families across the supplied split (19 distinct key-pairs, e.g. `benign (128)`[train]↔`benign (30)`[val] at dHash 0; separately, 147 same-split mixed-key content clusters span 72 key-pairs — both recorded in the committed CSVs). Phase 4 leakage tests must cover pair-level near-duplicate overlap in addition to family-level separation. Raw data untouched; candidates were not merged or deleted.
 - Dataset facts now VERIFIED by the Phase 1 audit (2026-09-16): 9,016 images; directory-encoded labels (benign/malignant); explicit augmentation lineage in filenames; **no** patient/study/lesion identifiers; **no** masks/annotations; **no** MRI data (D-2 state C → T-5). Bag definition, split unit, preprocessing, model configuration, MRI functionality and decision-support features must be based on the audit report, not on the former A-1…A-17 assumptions.
 - Repository layout: D-1 physically realized (2026-09-16) — `src/data/audit.py`, `data/manifests/`, `tests/`, gitignored `dataset/raw/`.
@@ -114,7 +116,7 @@ Phase 2 — Data Cleaning, Image Integrity & Augmentation Leakage Analysis
 - RESOLVED (2026-09-16) — Kaggle dataset structure inspected: pre-existing train/val split; classes benign/malignant; 9,016 images (8,158 PNG / 858 JPG).
 - RESOLVED (2026-09-16) — no reliable patient/study/lesion identifiers exist anywhere in the dataset; the finest defensible grouping unit is the filename-derived **source key** (496 keys; explicitly NOT a verified patient ID).
 - RESOLVED (2026-09-16) — augmentation lineage is identifiable: filenames encode rotated1/rotated2/rotated32/sharpened chains (8,520 augmented variants of 496 base images); 228 exact md5-duplicate groups; 25,607 near-duplicate candidate pairs (candidates only).
-- Need to determine how MIL bags can legitimately be constructed. — Phase 2 input now available: 496 source families (each with one high-confidence original candidate + explicit augmentation lineage) are the natural bag seeds; SSIM calibration data (`data/manifests/ssim_crosscheck.csv`) informs any deduplication policy.
+- RESOLVED (2026-09-18, Phase 3) — MIL bags legitimately constructed at the source-group level: BAG = one Phase 2 `source_group_id`, INSTANCE = one image file of the group, LABEL = directory-encoded class; 496 bags cover all 9,016 images exactly once; no patient/study/lesion identifiers were fabricated.
 - Need to determine availability of paired MRI data.
 - Need to determine whether an external MRI dataset/source is required.
 - Need to verify whether treatment-support functionality is appropriate for the available data.
@@ -424,7 +426,7 @@ Phase 1 complete, manifest available.
 
 # Phase 3 — Data Organization & MIL Bag Definition
 
-**Status:** [ ] Not Started
+**Status:** [x] Complete (2026-09-18 — bag definition selected and documented; bag manifest built; validation 13/13 PASS; exit criterion satisfied; commit + owner review pending)
 
 ### Objective
 Define, based only on verified Phase 1/2 findings, what constitutes a "bag" and an "instance" for the MIL formulation.
@@ -436,18 +438,18 @@ MIL is meaningless without a scientifically defensible bag definition. This must
 Phase 1 and Phase 2 complete.
 
 ### Tasks
-- [ ] Review Phase 1 audit findings on available identifiers (patient/study/lesion) and Phase 2 grouping findings (source-image/augmentation families).
-- [ ] Evaluate candidate bag definitions:
-  - [ ] Patient → images (only if patient IDs confirmed present)
-  - [ ] Study → images (only if study IDs confirmed present)
-  - [ ] Lesion → image/patch instances (only if lesion IDs/annotations confirmed present)
-  - [ ] Source-image-group → augmented instance variants (fallback if no higher-level identifiers exist)
-  - [ ] Single image → tiled patches as instances (fallback/alternative if grouping is unreliable)
-- [ ] Select and justify the bag definition actually supported by the data (expect this to likely be the source-image-group or image-as-bag-of-patches definition unless Phase 1 proves otherwise).
-- [ ] Explicitly document: BAG = ?, INSTANCE = ?, LABEL = ?
-- [ ] Diagram the chosen hierarchy (bag → instances → features → attention → prediction).
-- [ ] If no reliable patient/study grouping exists, explicitly document this limitation and record the decision to use the highest valid available grouping level instead of fabricating identifiers.
-- [ ] Build the bag manifest (bag ID, instance list, bag label, instance count).
+- [x] Review Phase 1 audit findings on available identifiers (patient/study/lesion) and Phase 2 grouping findings (source-image/augmentation families). — Phase 1: no patient/study/lesion identifiers, no annotations/masks, 496 filename-derived source keys (NOT verified IDs); Phase 2: 496 label-coherent source groups covering 9,016 images, 2 multi-split families, 0 label conflicts. (report §2–§3)
+- [x] Evaluate candidate bag definitions:
+  - [x] Patient → images (only if patient IDs confirmed present) — REJECTED: no patient IDs exist (Phase 1 exhaustive audit); fabrication prohibited. (report §5)
+  - [x] Study → images (only if study IDs confirmed present) — REJECTED: no study IDs/session markers exist. (report §6)
+  - [x] Lesion → image/patch instances (only if lesion IDs/annotations confirmed present) — REJECTED: no lesion IDs/annotations/masks exist. (report §7)
+  - [x] Source-image-group → augmented instance variants (fallback if no higher-level identifiers exist) — SELECTED: verified against the manifests (label coherence, membership, traceability, sizes 14–53, cross-split integrity). (report §8)
+  - [x] Single image → tiled patches as instances (fallback/alternative if grouping is unreliable) — evaluated, NOT selected: the fallback condition (unreliable grouping) does not hold; no tiling implemented. (report §9)
+- [x] Select and justify the bag definition actually supported by the data (expect this to likely be the source-image-group or image-as-bag-of-patches definition unless Phase 1 proves otherwise). — Candidate D (source-image-group) selected; verified from the actual manifests rather than assumed. (report §4, §8, §10)
+- [x] Explicitly document: BAG = ?, INSTANCE = ?, LABEL = ? — BAG = one Phase 2 `source_group_id`; INSTANCE = one image file of that group; LABEL = the group's directory-encoded class (benign/malignant). (report §10)
+- [x] Diagram the chosen hierarchy (bag → instances → features → attention → prediction). — documented in report §16 with features/attention/prediction explicitly marked conceptual / NOT implemented in Phase 3.
+- [x] If no reliable patient/study grouping exists, explicitly document this limitation and record the decision to use the highest valid available grouping level instead of fabricating identifiers. — source groups are filename/bytes-derived families, not verified identities; decision recorded. (report §5–§7, §12)
+- [x] Build the bag manifest (bag ID, instance list, bag label, instance count). — `data/manifests/bag_manifest.csv`: 496 bags, 9,016 instances, deterministic ordering, per-instance md5 traceability. (report §14–§15)
 
 ### Files / Modules
 - `src/mil/bag_definition.py`
@@ -459,12 +461,12 @@ Phase 1 and Phase 2 complete.
 - Bag manifest usable by downstream splitting and training phases.
 
 ### Validation Checks
-- [ ] Every instance in the bag manifest traces back to a valid entry in the Phase 1/2 manifests.
-- [ ] Every bag has a well-defined, non-ambiguous label.
-- [ ] Bag sizes (instance counts) are documented with summary statistics (min/max/mean/median).
+- [x] Every instance in the bag manifest traces back to a valid entry in the Phase 1/2 manifests. — V3-3: 9,016/9,016 instances trace via md5 to Phase 1 + Phase 2 rows.
+- [x] Every bag has a well-defined, non-ambiguous label. — V3-4: 496/496 bags single-labelled (286 benign / 210 malignant); 0 mixed-label bags.
+- [x] Bag sizes (instance counts) are documented with summary statistics (min/max/mean/median). — V3-7: min 14, max 53, mean 18.1774, median 16.0 — recomputed independently and matched to report §13.
 
 ### Exit Criteria
-- [ ] Bag definition formally documented and justified against actual dataset evidence.
+- [x] Bag definition formally documented and justified against actual dataset evidence. — report §4–§12 evaluates all five candidates against verified evidence and records the selected definition; validation suite V3-1…V3-13 13/13 PASS. SATISFIED (commit + owner review pending).
 
 ### Potential Issues / Risks
 - Temptation to assume patient-level bags exists even without IDs — must be actively resisted per project rules.

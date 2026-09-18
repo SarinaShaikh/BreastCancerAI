@@ -275,22 +275,24 @@ def v11():
     assert not (REPO / "checkpoints").exists()
     assert not (REPO / "data" / "processed").exists()
     # Phase 1 artifacts must remain present. (Originally this asserted the
-    # directory held EXACTLY these five files; Phase 2 legitimately added
-    # augmentation_groups.csv / ssim_crosscheck.csv /
-    # phase2_grouping_summary.json, so the check is now: the five Phase 1
-    # artifacts present + nothing outside the known Phase 1/Phase 2 sets.)
+    # directory held EXACTLY these five files; later phases legitimately add
+    # their roadmap-named artifacts — Phase 2 added augmentation_groups.csv /
+    # ssim_crosscheck.csv / phase2_grouping_summary.json and Phase 3 added
+    # bag_manifest.csv — so the check is now: the five Phase 1 artifacts
+    # present + nothing outside the known Phase 1/2/3 sets.)
     p1_required = {"audit_summary.json", "dataset_manifest.csv",
                    "dataset_source.json", "near_duplicate_candidates.csv",
                    "source_key_overlap.csv"}
     p2_known = {"augmentation_groups.csv", "ssim_crosscheck.csv",
                 "phase2_grouping_summary.json"}
+    p3_known = {"bag_manifest.csv"}
     present = {p.name for p in MANIFESTS.iterdir()}
     missing = p1_required - present
     assert not missing, f"Phase 1 artifacts missing: {sorted(missing)}"
-    unexpected = present - p1_required - p2_known
+    unexpected = present - p1_required - p2_known - p3_known
     assert not unexpected, f"unexpected artifacts: {sorted(unexpected)}"
     assert not list((REPO / "data").rglob("*split*")), "accidental split artifact"
-    return "src/ contains audit code only; manifests/ holds the 5 Phase 1 artifacts + known Phase 2 additions"
+    return "src/ contains audit code only; manifests/ holds the 5 Phase 1 artifacts + known Phase 2/3 additions"
 
 
 def main() -> int:
