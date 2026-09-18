@@ -356,7 +356,13 @@ def v2_11():
             f"training-adjacent import in {py.name}"
     assert not (REPO / "checkpoints").exists()
     assert not (REPO / "data" / "processed").exists()
-    assert not list((REPO / "data").rglob("*split*")), "accidental split artifact"
+    # Phase 4 legitimately added the roadmap-named split manifests
+    # (train/val/test_split.csv); anything else split-named under data/ is
+    # still unexpected.
+    p4_known = {"train_split.csv", "val_split.csv", "test_split.csv"}
+    stray = [p for p in (REPO / "data").rglob("*split*")
+             if p.name not in p4_known]
+    assert not stray, f"accidental split artifact: {stray}"
     expected_new = {"augmentation_groups.csv", "phase2_grouping_summary.json",
                     "ssim_crosscheck.csv"}
     present = {p.name for p in MANIFESTS.iterdir()}

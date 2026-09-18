@@ -48,8 +48,8 @@ Any AI coding assistant working on this repository MUST:
 | 0 | Project Definition, Scope & Research Requirements | [x] Complete (2026-09-16 — deliverables approved by project owner; D-1/D-2 in effect) | None | Scope document `reports/phase0_scope.md` + `reports/research_questions.md` + `reports/phase0_literature_review.md` + `reports/phase0_decisions.md` |
 | 1 | Dataset Acquisition & Complete Dataset Audit | [x] Complete (2026-09-16 — deliverables complete; manifests committed in `cec00cd`; audit report reviewed and **approved by the project owner**; validation 11/11 PASS) | Phase 0 | Dataset manifest + audit report (+ audit artifacts in `data/manifests/`, `tests/test_dataset_audit.py`) |
 | 2 | Data Cleaning, Image Integrity & Augmentation Leakage Analysis | [x] Complete (2026-09-18 — all tasks complete; validation 11/11 PASS; human visual spot-check recorded, all sections Plausible; committed in `4e72199`) | Phase 1 | Duplicate/near-duplicate report, cleaned manifest |
-| 3 | Data Organization & MIL Bag Definition | [x] Complete (2026-09-18 — bag definition selected from evidence and documented; bag manifest built; validation 13/13 PASS; commit + owner review pending) | Phase 2 | Bag definition spec + bag manifest |
-| 4 | Patient/Study-Level Data Splitting & Leakage Prevention | [ ] Not Started | Phase 3 | Train/val/test split files + leakage test results |
+| 3 | Data Organization & MIL Bag Definition | [x] Complete (2026-09-18 — bag definition selected from evidence and documented; bag manifest built; validation 13/13 PASS; committed in `b49f149`) | Phase 2 | Bag definition spec + bag manifest |
+| 4 | Patient/Study-Level Data Splitting & Leakage Prevention | [x] Complete (2026-09-18 — group-level constraint-aware split; 0 leakage across all tested dimensions; test set FROZEN sha256 `959f1cd3…`; validation 11/11 PASS; commit + owner review pending) | Phase 3 | Train/val/test split files + leakage test results |
 | 5 | Ultrasound Image Preprocessing & Augmentation Pipeline | [ ] Not Started | Phase 4 | Preprocessing pipeline + config file |
 | 6 | Baseline Deep Learning Models | [ ] Not Started | Phase 5 | Baseline model results |
 | 7 | Multiple Instance Learning Pipeline | [ ] Not Started | Phase 5 | MIL pipeline implementation |
@@ -69,7 +69,7 @@ Phase 0: 100% — Complete (2026-09-16; deliverables approved by project owner)
 Phase 1: 100% — Complete (2026-09-16; audit baseline approved by project owner)
 Phase 2: 100% — Complete (2026-09-18; all tasks + validation done; human visual spot-check recorded)
 Phase 3: 100% — Complete (2026-09-18; bag definition documented; bag manifest built; validation 13/13 PASS)
-Phase 4: 0%
+Phase 4: 100% — Complete (2026-09-18; leakage-free group-level split; test set frozen; validation 11/11 PASS)
 Phase 5: 0%
 Phase 6: 0%
 Phase 7: 0%
@@ -81,15 +81,15 @@ Phase 12: 0%
 Phase 13: 0%
 Phase 14: 0%
 
-**Overall: ~27%** (Phases 0–3 complete; Phase 4 Not Started; nothing later started)
+**Overall: ~33%** (Phases 0–4 complete; Phase 5 Not Started; nothing later started)
 
 ---
 
 ## Current Phase
 
-Phase 3 — Data Organization & MIL Bag Definition
+Phase 4 — Patient/Study-Level Data Splitting & Leakage Prevention
 
-**Status:** [x] Complete (2026-09-18) — bag definition formally selected from verified evidence (BAG = one Phase 2 `source_group_id`; INSTANCE = one image file of that source group; LABEL = the group's directory-encoded class); deliverables created (`src/mil/bag_definition.py`, `data/manifests/bag_manifest.csv`, `reports/phase3_bag_definition.md`, `tests/test_phase3_bags.py`); validation V3-1…V3-13 **13/13 PASS**; regeneration byte-identical across runs. **Phase 3 git commit awaits owner authorization.** Phases 0–2 remain Complete (Phase 2 committed in `4e72199`). Phase 4 has NOT been started.
+**Status:** [x] Complete (2026-09-18) — split unit = one complete Phase 3 `source_group_id`/source-image family (patient/study/lesion levels unavailable — no verified identifiers exist; none fabricated); conservative candidate-constraint co-splitting (ALL 25,607 Phase 2 candidate pairs treated as same-split constraints; candidates remain candidates); deterministic stratified allocation (`SPLIT_SEED=20260918`, 70/15/15 targets): train 349 groups/6,327 instances, val 74/1,339, test 73/1,350; **0 leakage** on every tested dimension (source-group, confirmed-duplicate, near-duplicate candidate 0/25,607, augmentation-family); the 2 originally cross-split families resolved whole (`grp-3281cc7851ab`→test, `grp-6f66ae71bafc`→train). **Test set FROZEN 2026-09-18, sha256 `959f1cd3d9f719195ac31af1a586d7c84824af1e23698ec7616c376714112b74`** — untouched until Phase 10. Deliverables: `src/data/splitting.py`, `data/manifests/{train,val,test}_split.csv`, `tests/test_leakage.py` (V-L4a…V-L4i **11/11 PASS**), `reports/phase4_split_report.md`. Phases 0–3 remain Complete (Phase 3 committed in `b49f149`). Phase 5 has NOT been started.
 
 ---
 
@@ -99,6 +99,7 @@ Phase 3 — Data Organization & MIL Bag Definition
 - **2026-09-16 — Phase 1 Complete (owner-approved audit baseline).** Authorized by the owner; anonymous kagglehub acquisition of the authorized public dataset into gitignored `dataset/raw/` (D-1); exhaustive audit v1.1.2 (`src/data/audit.py`): 9,016 images (8,158 PNG / 858 JPG; 224×224 ×8,520, 227×227 ×496 = base images; RGB; 0 unreadable; 0 unparsed); labels directory-encoded (benign/malignant); **no** patient/study/lesion IDs, masks, annotations, metadata files or MRI data (D-2 state C → **T-5**); 496 filename-derived source keys (NOT verified identifiers); 8,520 files are explicit augmentation variants; 228 exact-duplicate groups (0 cross-split — *erratum 2026-09-18: this milestone originally added "1 byte-identical pair across splits via `benign (36)`"; exhaustive re-verification shows 0 cross-split byte-identical pairs; the executed audit data was always correct, and `reports/phase1_dataset_audit.md` §0/§6/§8 now carry the correction*); **2/496 source keys span the pre-existing train/val split** (`benign (36)`, `malignant (18)`) — a confirmed source-key-level leakage risk; 25,607 near-duplicate candidate pairs (candidates only; 996 cross-split pairs across 40 candidate groups). Manifests committed in `cec00cd`; report `reports/phase1_dataset_audit.md`; validation `tests/test_dataset_audit.py` V-1…V-11 **11/11 PASS**. **The project owner reviewed and approved the audit findings as the project's factual baseline (dataset accepted as-is, NOT as leakage-free); see the sign-off record in the Phase 1 section.** Phase 2–14 untouched; no model/MIL/training/split code created.
 - **2026-09-18 — Phase 2 implemented (human visual spot-check recorded; artifacts committed in `4e72199`).** *(A 2026-09-18 final review found and fixed two documentation misattributions: §5.2/§5.4 of the report and the corresponding notes here originally described the 977 cross-split cross-key pairs as spanning 72 key-pairs with a same-split example — executed CSVs show 19 distinct key-pairs and a genuinely cross-split example `benign (128)`↔`benign (30)`; the 72 count belongs to §5.3's 147 same-split mixed-key clusters. All executed artifacts were always correct; no report statistic other than these attributions changed.)* Grouping pipeline v1.0.0 (`src/preprocessing/duplicate_detection.py`, `src/preprocessing/perceptual_hash.py` reusing the Phase 1 audit module verbatim): all 9,016 images assigned to **496 `source_group_id` families** (confirmed-identity edges only: same filename source key ∪ same md5; label guard: 0 conflicts; candidates never merge groups); one high-confidence original candidate per group (496 chain-free 227×227 files) + 8,520 explicit `augmented_variant` files; 0 ungrouped/low-confidence; 228 exact-duplicate groups fully absorbed by lineage (464−228=236 redundant md5 merges — 100% agreement with filename evidence); **SSIM cross-validation** (Wang et al. 2004, numpy-only, deterministic) of all 25,607 Phase 1 candidate pairs — monotone agreement with dHash distance, 1,139 pairs (4.4%) SSIM<0.60 documented as over-grouping risk; **new leakage decomposition: 996 cross-split candidate pairs = 19 same-key + 977 cross-key** (spanning 19 distinct key-pairs, e.g. `benign (128)`[train]↔`benign (30)`[val] at dHash 0 — an additional leakage signal Phase 4 must test); content-purity check (filename-blind clusters): 147 mixed-key clusters, 0 mixed-class, 0 cross-split. Outputs: `data/manifests/augmentation_groups.csv`, `ssim_crosscheck.csv`, `phase2_grouping_summary.json`; report `reports/phase2_leakage_analysis.md`; validation `tests/test_phase2_grouping.py` V2-1…V2-11 **11/11 PASS**; 3 byte-identical pipeline runs; raw dataset re-hashed bit-identical (V2-10). Phase 1 artifacts digest-verified unchanged. No deletions/moves/renames of any image; no model/training/split code created; Phases 3–14 untouched.
 - **2026-09-18 — Phase 3 Complete (bag definition; commit + owner review pending).** Candidates A (patient) / B (study) / C (lesion) formally rejected — Phase 1 exhaustively verified no patient/study/lesion identifiers or annotations exist and fabricating them is prohibited; Candidate E (image-as-bag-of-patches) evaluated but not selected (grouping is reliable and content-corroborated; no tiling implemented). **Selected: BAG = one Phase 2 `source_group_id` (source-image family); INSTANCE = one image file of that group; LABEL = the group's directory-encoded class (benign/malignant).** `src/mil/bag_definition.py` v1.0.0 builds `data/manifests/bag_manifest.csv` deterministically: 496 bags (286 benign / 210 malignant), 9,016 instances, sizes {14×1, 16×285, 21×209, 53×1} (min 14, max 53, mean 18.1774, median 16); `bag_id` = deterministic `grp-`→`bag-` mapping; instance membership `|`-joined with per-instance md5; `source_key_status=inferred_from_filename_not_verified_identifier` carried on every row; the 2 multi-split families (`benign (36)`, `malignant (18)`) remain SINGLE bags (V3-13). MIL hierarchy (bag→instances→features→attention→prediction) documented conceptually — features/attention/prediction NOT implemented. Report `reports/phase3_bag_definition.md`; validation `tests/test_phase3_bags.py` V3-1…V3-13 **13/13 PASS** (incl. raw-data re-hash, AST phase-boundary scan, 2-run byte-identical regeneration); Phase 1 V-11 artifact whitelist extended minimally (`bag_manifest.csv`) — all three suites green (11/11, 11/11, 13/13). No raw file modified; Phase 1/2 manifests unchanged; no splitting/preprocessing/model code created; Phases 4–14 untouched.
+- **2026-09-18 — Phase 4 Complete (leakage-free split + test freeze; commit + owner review pending).** Split unit: one complete Phase 3 `source_group_id` (patient/study/lesion splitting unavailable — Phase 1 verified no identifiers; none fabricated; `source_key` is NOT a patient/study/lesion ID). Conservative policy: ALL 25,607 near-duplicate **candidate** pairs from the committed Phase 2 manifest treated as same-split constraints (rationale: the leakage test quantifies over every pair; candidates NOT reclassified, Phase 2 grouping artifact untouched) → 356 allocation units (connected components; 6 label-mixed units co-split whole, affecting no bag label). Deterministic stratified greedy allocation (largest-unit-first, worst-class-fill rule, `SPLIT_SEED=20260918`, 70/15/15 instance-share targets): **train 349 groups/6,327 instances (50.5% benign), val 74/1,339 (51.4%), test 73/1,350 (51.0%)**; every group and all 9,016 instances assigned exactly once. Leakage results: source-group disjointness PASS; 228 confirmed md5-duplicate groups — 0 cross splits; **0/25,607 candidate pairs cross splits** (incl. the 996 originally cross-split); 0 augmentation families span splits; the 2 originally cross-split families (`benign (36)`, `malignant (18)`) resolved whole (test/train respectively). **Test set FROZEN 2026-09-18 — sha256 `959f1cd3d9f719195ac31af1a586d7c84824af1e23698ec7616c376714112b74`** (independently cross-verified with `sha256sum`), untouched until Phase 10. Patient/study/lesion overlap explicitly documented NOT ASSESSABLE (no verified IDs). Report `reports/phase4_split_report.md`; validation `tests/test_leakage.py` V-L4a…V-L4i **11/11 PASS**; two fresh-process regenerations byte-identical; regression suites re-run green after minimal disclosed V-11/V2-11/V3-10 whitelist updates for the roadmap-named split manifests (11/11, 11/11, 13/13). No raw file modified; Phase 1–3 manifests/code/reports untouched; no training/preprocessing/augmentation/attention/evaluation code created; Phases 5–14 untouched.
 
 ---
 
@@ -106,8 +107,9 @@ Phase 3 — Data Organization & MIL Bag Definition
 
 - **Phase 1 is Complete (2026-09-16)** — deliverables committed (`cec00cd`) and the audit report approved by the project owner; both exit criteria satisfied.
 - **Phase 2 is Complete (2026-09-18)** — all tasks implemented and validated (V2-1…V2-11, 11/11 PASS); human visual spot-check completed and recorded (all 10 sections Plausible); artifacts committed in `4e72199`.
-- **Phase 3 (2026-09-18)** — bag definition complete and validated (V3-1…V3-13, 13/13 PASS); deliverables created; **exit criterion satisfied; pending Phase 3 commit + owner review** of `reports/phase3_bag_definition.md`.
-- **New Phase 2 leakage finding requiring Phase 4 handling:** the 996 cross-split near-duplicate candidate pairs decompose into 19 same-key pairs (the known `benign (36)`/`malignant (18)` leak) and **977 cross-key pairs** — near-identical content from DIFFERENT source families across the supplied split (19 distinct key-pairs, e.g. `benign (128)`[train]↔`benign (30)`[val] at dHash 0; separately, 147 same-split mixed-key content clusters span 72 key-pairs — both recorded in the committed CSVs). Phase 4 leakage tests must cover pair-level near-duplicate overlap in addition to family-level separation. Raw data untouched; candidates were not merged or deleted.
+- **Phase 3 is Complete (2026-09-18)** — bag definition validated (V3-1…V3-13, 13/13 PASS); deliverables committed in `b49f149`.
+- **Phase 4 (2026-09-18)** — leakage-free group-level split complete (V-L4a…V-L4i, 11/11 PASS); test set frozen (sha256 `959f1cd3…`, 2026-09-18); **pending Phase 4 commit + owner review** of `reports/phase4_split_report.md`.
+- **RESOLVED (2026-09-18, Phase 4) — pair-level near-duplicate leakage signal:** the 996 cross-split candidate pairs (19 same-key + 977 cross-key) recorded by Phase 2 are now fully co-split under the conservative Phase 4 constraint policy — **0/25,607 candidate pairs cross the Phase 4 train/val/test boundaries**; candidates remain candidates (no reclassification, no Phase 2 artifact changes).
 - Dataset facts now VERIFIED by the Phase 1 audit (2026-09-16): 9,016 images; directory-encoded labels (benign/malignant); explicit augmentation lineage in filenames; **no** patient/study/lesion identifiers; **no** masks/annotations; **no** MRI data (D-2 state C → T-5). Bag definition, split unit, preprocessing, model configuration, MRI functionality and decision-support features must be based on the audit report, not on the former A-1…A-17 assumptions.
 - Repository layout: D-1 physically realized (2026-09-16) — `src/data/audit.py`, `data/manifests/`, `tests/`, gitignored `dataset/raw/`.
 - **New leakage finding requiring later-phase handling:** the dataset's pre-existing train/val split shares 2 of 496 filename-derived source keys (`benign (36)`, `malignant (18)`), with near-identical cross-split variants (minimum dHash distance 2; exhaustive re-verification during spot-check preparation found **0 cross-split byte-identical pairs** — an earlier "1 byte-identical cross-split pair via `benign (36)`" sentence was an editorial error now corrected in both phase reports); 228 exact-duplicate groups exist. Phase 2 confirmed both at the family level and quantified the additional cross-key content signal (977 pairs). Split correction is later-phase work (Phase 4); raw data untouched.
@@ -488,19 +490,19 @@ Even without patient IDs, failing to split at the source-image/augmentation-grou
 Phase 3 complete (bag manifest available).
 
 ### Tasks
-- [ ] Determine the split unit: patient (if available) → study (if available) → source-image group (fallback, expected default given known dataset constraints).
-- [ ] Implement stratified splitting by class label at the chosen split-unit level.
-- [ ] Generate train/validation/test split files (lists of bag IDs / group IDs per split).
-- [ ] Implement automated leakage tests:
-  - [ ] Patient overlap check (if applicable)
-  - [ ] Study overlap check (if applicable)
-  - [ ] Source-image overlap check
-  - [ ] Duplicate overlap check
-  - [ ] Near-duplicate overlap check
-  - [ ] Augmentation-family overlap check
-- [ ] Run all leakage tests and confirm zero overlaps across splits.
-- [ ] Freeze and lock the test set; document the freeze date and hash of the test split file.
-- [ ] Document class balance within each split.
+- [x] Determine the split unit: patient (if available) → study (if available) → source-image group (fallback, expected default given known dataset constraints). — patient/study/lesion levels UNAVAILABLE (Phase 1 exhaustive audit; no identifiers fabricated); **split unit = one complete Phase 3 `source_group_id`/source-image family**. (report §3–§6)
+- [x] Implement stratified splitting by class label at the chosen split-unit level. — deterministic stratified greedy allocation over candidate-constraint allocation units; instance-share targets 70/15/15 per class; group membership never altered. (report §7–§8)
+- [x] Generate train/validation/test split files (lists of bag IDs / group IDs per split). — `data/manifests/{train,val,test}_split.csv`: per-instance rows with split, source_group_id, bag_id, label, path, md5, source_key(+status), allocation unit, original supplied split. (report §9)
+- [x] Implement automated leakage tests:
+  - [x] Patient overlap check (if applicable) — V-L4A: documented NOT ASSESSABLE (no verified patient IDs; nothing fabricated; no fabricated columns).
+  - [x] Study overlap check (if applicable) — V-L4B: documented NOT ASSESSABLE (no verified study IDs).
+  - [x] Source-image overlap check — V-L4c: train∩val = train∩test = val∩test = ∅ over source_group_id.
+  - [x] Duplicate overlap check — V-L4d: 228 confirmed md5-duplicate groups re-derived; 0 cross splits.
+  - [x] Near-duplicate overlap check — V-L4e: **0/25,607 candidate pairs cross splits** (incl. the 996 originally cross-split; candidates NOT reclassified).
+  - [x] Augmentation-family overlap check — V-L4f: 9,016/9,016 instances share their family's single split.
+- [x] Run all leakage tests and confirm zero overlaps across splits. — `tests/test_leakage.py` V-L4a…V-L4i **11/11 PASS**.
+- [x] Freeze and lock the test set; document the freeze date and hash of the test split file. — **FROZEN 2026-09-18; sha256 `959f1cd3d9f719195ac31af1a586d7c84824af1e23698ec7616c376714112b74`** (independently cross-verified); untouched until Phase 10. (report §18–§19)
+- [x] Document class balance within each split. — train 50.5% / val 51.4% / test 51.0% benign; deviations from exact 70/15/15 explained by atomic units + conservative constraints. (report §10)
 
 ### Files / Modules
 - `src/data/splitting.py`
@@ -513,11 +515,11 @@ Phase 3 complete (bag manifest available).
 - Automated test suite proving zero overlap.
 
 ### Validation Checks
-- [ ] All leakage tests pass with zero overlaps.
-- [ ] Class distribution per split documented and reasonably balanced or explicitly noted as imbalanced.
+- [x] All leakage tests pass with zero overlaps. — V-L4a…V-L4i 11/11 PASS: source-group, confirmed-duplicate, near-duplicate-candidate (0/25,607), and augmentation-family dimensions all zero; patient/study levels documented not assessable.
+- [x] Class distribution per split documented and reasonably balanced or explicitly noted as imbalanced. — per-split class shares within ~1 point of 50% benign (report §10); residual deviation from 70/15/15 instance shares explained by atomic units + conservative constraints.
 
 ### Exit Criteria
-- [ ] Test set frozen, hashed, and marked as untouched until Phase 10.
+- [x] Test set frozen, hashed, and marked as untouched until Phase 10. — `test_split.csv` FROZEN 2026-09-18; sha256 `959f1cd3d9f719195ac31af1a586d7c84824af1e23698ec7616c376714112b74` recorded in report §19 and enforced by V-L4g/V-L4h; freeze semantics (no tuning against the test set until Phase 10) documented. SATISFIED (commit + owner review pending).
 
 ### Potential Issues / Risks
 - Small dataset size may make patient/study-level (or group-level) splitting reduce test set size significantly — document trade-off.

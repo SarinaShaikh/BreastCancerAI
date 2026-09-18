@@ -238,10 +238,14 @@ def v3_10():
             hit = [t for t in ("train", "fit", "predict", "transform",
                                "attention", "checkpoint") if t in low]
             assert not hit, f"forbidden call: {name} ({hit})"
+    # Phase 4 legitimately added the roadmap-named split manifests; any
+    # other split/fold-named file under data/ remains unexpected here.
+    p4_known = {"train_split.csv", "val_split.csv", "test_split.csv"}
     p4 = [p for p in (REPO / "data").rglob("*")
-          if p.is_file() and re.search(r"split|fold", p.name)]
+          if p.is_file() and p.name not in p4_known
+          and re.search(r"split|fold", p.name)]
     assert not p4, f"Phase 4-like artifacts present: {p4}"
-    return "AST analysis: no ML/split/training/attention imports, definitions, or calls; no split artifacts"
+    return "AST analysis: no ML/split/training/attention imports, definitions, or calls; no unexpected split artifacts"
 
 
 # --- V3-11: manifest integrity -----------------------------------------------------------
