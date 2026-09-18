@@ -355,7 +355,12 @@ def v2_11():
         assert not forbidden.search(py.read_text(encoding="utf-8")), \
             f"training-adjacent import in {py.name}"
     assert not (REPO / "checkpoints").exists()
-    assert not (REPO / "data" / "processed").exists()
+    # data/processed/ is Phase 5's roadmap-named cache; legitimate only in the
+    # Phase 5 layout (three split dirs + summary), otherwise unexpected.
+    if (REPO / "data" / "processed").exists():
+        p5_ok = {"train", "val", "test", "cache_summary.json"}
+        assert {p.name for p in (REPO / "data" / "processed").iterdir()} <= p5_ok, \
+            "unexpected data/processed/ entry (Phase 5 layout drift)"
     # Phase 4 legitimately added the roadmap-named split manifests
     # (train/val/test_split.csv); anything else split-named under data/ is
     # still unexpected.

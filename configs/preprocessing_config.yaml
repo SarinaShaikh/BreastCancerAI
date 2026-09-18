@@ -1,0 +1,159 @@
+# Phase 5 — Preprocessing Configuration (versioned, finalized)
+# Project: Predicting Breast Cancer from Ultrasound Images with Cross-Modal
+#          Validation using Dual Attention Multiple Instance Learning
+# Roadmap: PROGRESS.md Phase 5. Every value below is finalized from executed
+# Phase 5 measurements on the actual dataset; no placeholders.
+#
+# SCOPE: deterministic preprocessing + train-time-only augmentation POLICY.
+# No model/backbone-dependent values appear here (no backbone is selected
+# before Phase 6; none was invented).
+
+config:
+  version: "1.0.0"
+  created: "2026-09-18"
+  pipeline_module: "src/preprocessing/pipeline.py"
+  pipeline_version: "1.0.1"
+  random_seed: 20260918          # fixed, documented seed (train-time augmentation only)
+
+image_io:
+  input_formats: ["PNG", "JPEG"]          # verified present in the raw dataset (Phase 1 + Phase 5 re-verification)
+  on_unreadable: "fail_explicitly"        # never silently skipped; cache build aborts and records the path
+  raw_data_untouched: true                # loader is read-only; raw files are never written
+
+image:
+  size:
+    height: 224
+    width: 224
+  resize:
+    method: "BILINEAR"                    # PIL Image.BILINEAR, deterministic
+    aspect_ratio: "preserved"             # sources are square (224 or 227); uniform scale, no distortion
+    rationale: >
+      Executed Phase 5 measurement: 8,520 of 9,016 instances are exactly
+      224x224 and the 496 originals are 227x227. 224x224 reproduces the
+      dataset's dominant native pixel grid exactly (no resampling for
+      94.5% of instances), changes the 496 originals by only 3 px
+      (uniform scale 0.9887), is computationally practical, and keeps all
+      splits consistent. No claim of clinical optimality is made.
+    bilinear_vs_lanczos_note: >
+      Bilinear chosen over sharper kernels (Lanczos) to avoid introducing
+      new sharpening-ringing artifacts that could interact with the
+      dataset's existing sharpened-variant lineage (Phase 1/2 evidence).
+
+channels:
+  source_distribution:
+    container_modes: ["RGB"]              # all inspected images open as RGB containers
+    formats: {"PNG": "8-bit palette/RGB containers", "JPEG": "RGB (grayscale JPEG would open as L; none observed)"}
+    chroma_observation: >
+      Executed Phase 5 measurement (902-image systematic sample): 14/902
+      images (1.55%, all PNG) contain ANY chroma deviation > 16/255; the
+      maximum affected pixel fraction in a single image was 6.35%
+      (train/benign/benign (277)-sharpened-sharpened.png). The remaining
+      ~98.5% of images are pure grayscale inside RGB containers. The
+      chroma-bearing regions are consistent with burned-in machine
+      overlays/markers, not tissue signal (documented observation).
+  final_representation: "L (single-channel grayscale, 8-bit source depth)"
+  conversion: "PIL convert('L') for every image, before resize"
+  rationale: >
+    Ultrasound intensity is the diagnostic signal; the dataset is
+    grayscale in content. A single canonical channel removes the
+    RGB-container inconsistency and avoids encoding the rare overlay
+    colors as if they were tissue information. No unimplemented backbone
+    (e.g. 3-channel pretrained expectations) was allowed to drive this
+    choice.
+  limitation: >
+    Color information in the ~1.5% of images with overlay chroma is not
+    represented in the cached output (their intensity contrast is
+    retained). No evidence exists in this project that overlay color
+    carries diagnostic information.
+
+normalization:
+  method: "per-pixel affine: (x/255 - mean) / std   (x = grayscale intensity)"
+  statistics:
+    mean: 0.316515                        # train-split-derived, grayscale, 2026-09-18
+    std: 0.245010
+  statistics_source: "train split ONLY (6,327 instances), computed from raw files in L mode"
+  test_or_val_contribution: "none"        # val/test are transformed with these fixed constants
+  output_range_note: >
+    Normalized values lie approximately in [-1.29, 2.79] for this dataset
+    (x/255 in [0,1]).
+
+cache:
+  output_dir: "data/processed"
+  layout:
+    train: "data/processed/train"
+    val: "data/processed/val"
+    test: "data/processed/test"
+  file_format: "PNG 16-bit grayscale (mode 'I;16')"
+  storage_transform:
+    description: "uint16 = round(((x/255 - mean)/std + 8) * 4096)"
+    offset: 8.0
+    scale: 4096.0
+    precision: 0.000244140625             # 1/4096 in normalized units; lossless for this pipeline's purposes
+    decode: "(uint16 / 4096) - 8 -> normalized float"
+  ordering: "deterministic; outputs written in split-manifest order (sorted by image_path)"
+  provenance_file: "data/processed/{split}/provenance.csv"
+  provenance_columns: ["output_file", "image_path", "md5", "bag_id", "source_group_id", "bag_label", "split", "original_supplied_split"]
+
+crop:
+  lesion_aware: "NOT PERFORMED"           # Phase 1: no lesion annotations/masks/coordinates exist; none fabricated
+  non_lesion_crop: "none"                 # full frame after resize; no evidence justifies content-derived cropping
+  statement: "No lesion-aware cropping is performed because lesion annotations/masks are unavailable."
+
+despeckling:
+  decision: "EXCLUDED from the finalized preprocessing pipeline"
+  rationale: >
+    Bounded Phase 5 evaluation on train-derived samples only (60 images,
+    deterministic selection, gradient-magnitude energy after filtering vs
+    before, on the 224x224 grayscale pipeline representation): 3x3 median
+    filtering retained 79.1% of texture/edge energy (20.9% suppressed);
+    Gaussian sigma=0.5 retained 91.7% (8.3% suppressed). Speckle and
+    tissue texture are not separable here without downstream evidence,
+    so any suppression risks the diagnostically relevant texture the
+    roadmap's risk note warns about. No Phase 5 evidence justifies
+    including a despeckling filter; exclusion is the conservative,
+    evidence-grounded choice (a future phase may revisit this with model
+    evidence, without touching the frozen test set).
+  candidates_evaluated: ["median 3x3 (PIL MedianFilter)", "gaussian sigma=0.5 (PIL GaussianBlur)"]
+  deterministic_if_enabled: true          # n/a while excluded
+
+augmentation:
+  existing_dataset_lineage_warning: >
+    The SOURCE DATASET already contains augmented image files (rotation/
+    sharpening chains; Phase 1/2 lineage). Those files are part of the
+    supplied dataset, are represented via Phase 2 source_group_id lineage,
+    and are NOT independent patients, studies, lesions, or clinical
+    observations. Phase 3 definitions are preserved: BAG = one
+    source_group_id; INSTANCE = one image file of the group; LABEL =
+    directory-encoded benign/malignant class.
+  train:
+    policy: "horizontal_flip p=0.5, applied AT TRAINING TIME ONLY (on the fly; NOT cached)"
+    justification: >
+      Horizontal flip is the only new transform adopted: it introduces a
+      genuinely new invariance (no flip variants exist in the dataset
+      lineage) without duplicating the dataset's existing rotation/
+      sharpening augmentation. The dataset's near-uniform family sizes
+      (16/21) and Phase 4 group-level splitting keep flipped variants
+      inside the same bag/split by construction; no cross-split leakage
+      is possible because augmentation happens only on cached TRAIN
+      tensors at training time.
+    deterministic: "yes under the documented seed (20260918) and per-call RNG discipline"
+  validation:
+    policy: "none"                        # deterministic preprocessing only
+  test:
+    policy: "none"                        # deterministic preprocessing only; frozen until Phase 10
+  enforcement: "pipeline.augment() raises unless split == 'train'; automated test V5-F verifies"
+
+test_set_protection:
+  frozen_manifest: "data/manifests/test_split.csv"
+  frozen_sha256: "959f1cd3d9f719195ac31af1a586d7c84824af1e23698ec7616c376714112b74"
+  freeze_date: "2026-09-18"
+  rules:
+    - "test preprocessing is strictly deterministic (load, convert('L'), resize BILINEAR, fixed normalization)"
+    - "no augmentation of any kind for validation/test"
+    - "no normalization statistics or preprocessing parameters derived from val/test"
+    - "no preprocessing-method selection based on val/test data or performance"
+    - "cache is a transformed representation of the frozen test set, not a tuning opportunity"
+
+reproducibility:
+  determinism: "fixed seed; explicit ordering; no filesystem-order or hash-randomization dependence; no timestamps inside caches"
+  rebuild: "python -m src.preprocessing.pipeline  (rebuilds all three split caches identically)"

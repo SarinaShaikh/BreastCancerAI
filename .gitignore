@@ -23,3 +23,8 @@ frontend/node_modules/
 model/da_mil/weights/
 *.pth
 *.pt
+# Phase 5: generated 16-bit PNG cache is regenerable byte-identically from
+# dataset/raw + configs/preprocessing_config.yaml + src/preprocessing/pipeline.py.
+# Deterministic cache metadata (per-split provenance.csv + cache_summary.json)
+# IS tracked; only the image PNGs are ignored.
+data/processed/*/*.png

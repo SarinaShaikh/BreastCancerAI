@@ -1,0 +1,53 @@
+{
+  "augmentation_in_cache": "none (train augmentation is training-time only, never cached)",
+  "config": "configs/preprocessing_config.yaml",
+  "frozen_test_sha256_verified": "959f1cd3d9f719195ac31af1a586d7c84824af1e23698ec7616c376714112b74",
+  "phase5_version": "1.0.0",
+  "pipeline_version": "1.0.1",
+  "results": [
+    {
+      "blank_images": 0,
+      "images": 6327,
+      "images_clipped_high": 0,
+      "images_clipped_low": 0,
+      "provenance_sha256": "c2f633989c7670bb584394f2f521ea60f511d45e8f73e5234d40bfd9f38587f3",
+      "rows": 6327,
+      "split": "train",
+      "uint16_max": 44194.0,
+      "uint16_mean": 32767.7659,
+      "uint16_min": 27477.0,
+      "uint16_std": 4095.1695
+    },
+    {
+      "blank_images": 0,
+      "images": 1339,
+      "images_clipped_high": 0,
+      "images_clipped_low": 0,
+      "provenance_sha256": "a544122e8e19fe36a48b36ffd41161e9941884dfbcb5b459937ec2f5cb24e939",
+      "rows": 1339,
+      "split": "val",
+      "uint16_max": 44194.0,
+      "uint16_mean": 32878.1379,
+      "uint16_min": 27477.0,
+      "uint16_std": 4102.7253
+    },
+    {
+      "blank_images": 0,
+      "images": 1350,
+      "images_clipped_high": 0,
+      "images_clipped_low": 0,
+      "provenance_sha256": "9e15eb296fdce7ecb8d68b2b8d35e8d550c60abd16584de722a942f63c02f3e3",
+      "rows": 1350,
+      "split": "test",
+      "uint16_max": 44194.0,
+      "uint16_mean": 32832.8668,
+      "uint16_min": 27477.0,
+      "uint16_std": 4151.0724
+    }
+  ],
+  "split_instance_counts": {
+    "test": 1350,
+    "train": 6327,
+    "val": 1339
+  }
+}

@@ -273,7 +273,13 @@ def v11():
         assert not forbidden_imports.search(py.read_text(encoding="utf-8")), \
             f"training-adjacent import in {py.name}"
     assert not (REPO / "checkpoints").exists()
-    assert not (REPO / "data" / "processed").exists()
+    # data/processed/ is Phase 5's roadmap-named cache; it is legitimate only
+    # if it matches the Phase 5 layout (three split dirs + summary, nothing
+    # else), and is otherwise unexpected.
+    if (REPO / "data" / "processed").exists():
+        p5_ok = {"train", "val", "test", "cache_summary.json"}
+        assert {p.name for p in (REPO / "data" / "processed").iterdir()} <= p5_ok, \
+            "unexpected data/processed/ entry (Phase 5 layout drift)"
     # Phase 1 artifacts must remain present. (Originally this asserted the
     # directory held EXACTLY these five files; later phases legitimately add
     # their roadmap-named artifacts — Phase 2 added augmentation_groups.csv /
