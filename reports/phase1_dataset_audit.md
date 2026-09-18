@@ -31,9 +31,14 @@ Headline findings:
    augmented variants of 496 base images. The effective independent-unit count
    is ~496, not 9,016 — or 494 after removing the 2 leak keys' ambiguity.
 3. **228 exact md5-duplicate groups** exist (464 files); none cross the
-   pre-existing split boundary, but duplicates of base images appear at
-   *different chain depths across splits* (e.g. `benign (36)-rotated2.png`
-   [train] ≡ `benign (36)-rotated1.png` [val], md5-identical).
+   pre-existing split boundary. *(Erratum 2026-09-18: this bullet originally
+   continued "...but duplicates of base images appear at different chain
+   depths across splits, e.g. `benign (36)-rotated2.png` [train] ≡
+   `benign (36)-rotated1.png` [val], md5-identical" — an editorial error:
+   the exhaustive audit data (§6; `audit_summary.json`
+   `cross_split_exact_groups: 0`) never contained such a group, and exhaustive
+   re-verification during Phase 2 spot-check preparation confirms 0
+   cross-split md5-identical file pairs exist.)*
 4. **No MRI data of any kind** → D-2 state C / **T-5 (Absence of MRI
    validation)**.
 5. **No patient/study/lesion identifiers exist** in any form. Source keys are
@@ -167,11 +172,15 @@ the world.
 Cross-check: every md5-duplicate pair has dHash distance **0** (246/246
 pairs), i.e. the two independent methods agree completely.
 
-Important nuance: "no cross-split exact groups" does **not** mean no
-cross-split content identity — see §7 and §8: md5-identical files across
-splits exist under *different chain labels* (the split-overlap file lists in
-`data/manifests/source_key_overlap.csv` record the confirmed example), and
-the md5 grouping is over exact file bytes only.
+Important nuance: "no cross-split exact groups" here means exactly that —
+**no md5-identical files exist across the supplied splits anywhere in the
+dataset** (exhaustive md5 pass). The split-overlap file lists in
+`data/manifests/source_key_overlap.csv` show instead that both shared keys
+have near-identical (not byte-identical) cross-split variants; the md5
+grouping is over exact file bytes only. *(Erratum 2026-09-18: this
+paragraph originally asserted md5-identical files across splits under
+different chain labels — contradicted by the executed data; corrected
+during Phase 2 spot-check preparation.)*
 
 ## 7. Near-duplicate candidates (V-6; CANDIDATES ONLY)
 
@@ -208,21 +217,25 @@ The dataset ships `train/` and `val/` with **no creation documentation**.
 
 | Source key | train files | val files | Same chain across splits? | md5-exact members? |
 |---|---|---|---|---|
-| `benign (36)` | 12 | 4 | no (chains disjoint) | **yes — across splits**: `train/benign/benign (36)-rotated2.png` ≡ `val/benign/benign (36)-rotated1.png` (md5-identical, different chain labels) |
-| `malignant (18)` | 10 | 11 | no | yes — *within* train (`-rotated32-rotated1.png` ≡ `-rotated32-rotated32.png`) |
+| `benign (36)` | 12 | 4 | no (chains disjoint) | no — minimum cross-split dHash distance 2 (e.g. `train/benign/benign (36)-sharpened-sharpened.png` ↔ `val/benign/benign (36).png`); 0 internal md5 duplicates |
+| `malignant (18)` | 10 | 11 | no | yes — *within* train only (`-rotated32-rotated1.png` ≡ `-rotated32-rotated32.png`, md5-identical) |
 
 ### 8.2 Classification of this finding
 
 - **Confirmed relationship:** files sharing a source key are related by the
   dataset's own naming scheme (same base image, augmented variants).
-- **Confirmed leakage risk at source-key level:** 2 keys span both splits;
-  for `benign (36)` this includes **byte-identical images in train and val**.
+- **Confirmed leakage risk at source-key level:** 2 keys span both splits.
+  *(Erratum 2026-09-18: this bullet originally added "byte-identical images
+  in train and val" for `benign (36)` — the exhaustive md5 pass shows no
+  cross-split byte-identical files; the cross-split similarity is
+  near-identical at candidate level, minimum dHash distance 2.)*
 - **Not established:** whether the source key equals a patient or lesion —
   the leakage is therefore stated at the *source-key* level, not the patient
   level.
 - **Impact:** the pre-existing split cannot be used as-is for an unbiased
   generalization estimate: at minimum, 2/50 val source keys (4%) are seen in
-  train, one with an exact byte-identical val image. Corrective split
+  train, with near-identical cross-split variants (minimum dHash distance 2
+  within `benign (36)`). Corrective split
   construction is **later-phase work** (roadmap places splitting in a later
   phase); Phase 1 only documents, and raw data is untouched.
 - Aggravating context (executed counts): 8,520/9,016 files are explicit
@@ -294,7 +307,9 @@ findings — none of the MRI/identifier-related assumptions survived.)
    splitting), never file-random, or the 8,520 augmented files will leak
    across splits.
 2. The pre-existing `train/val` split is **not a valid test instrument** as-is
-   (2 shared keys; 1 byte-identical val image). This feeds RQ-5 (leakage-free
+   (2 shared source keys; near-identical variants across splits — no
+   byte-identical cross-split files exist, see the §6/§8 errata). This feeds
+   RQ-5 (leakage-free
    splitting) and the roadmap's split-design phase.
 3. Effective sample size for any bag-level claim is ~496 source images, not
    9,016 files — bag construction (later phase) should treat source keys as

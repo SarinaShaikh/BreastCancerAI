@@ -1,0 +1,143 @@
+{
+  "phase2_version": "1.0.0",
+  "generated_at_utc": "2026-09-18T05:25:26+00:00",
+  "inputs": {
+    "phase1_manifest_rows": 9016
+  },
+  "grouping_policy": {
+    "source_group_id": "connected components over confirmed-identity edges only: same filename source_key and same md5 (byte-identical)",
+    "near_duplicate_candidates": "NOT identity edges; reported and SSIM-cross-checked only",
+    "label_guard": "edges with conflicting class labels are never merged; counted and listed",
+    "split_policy": "grouping is split-agnostic BY DESIGN (Phase 4 group-level splitting depends on it); every multi-split group is reported as a leakage-risk artifact"
+  },
+  "merge_edges": {
+    "filename_source_key": 8520,
+    "exact_md5": 0,
+    "redundant": 236,
+    "label_conflict_blocked": 0
+  },
+  "label_conflicts": {
+    "count": 0,
+    "detail": []
+  },
+  "counts": {
+    "total_images": 9016,
+    "total_groups": 496,
+    "group_size_histogram": {
+      "14": 1,
+      "16": 285,
+      "21": 209,
+      "53": 1
+    },
+    "singleton_groups": 0,
+    "largest_group": 53,
+    "images_in_multi_split_groups": 37,
+    "multi_split_groups": 2,
+    "multi_split_group_list": [
+      {
+        "source_group_id": "grp-3281cc7851ab",
+        "splits": "train|val"
+      },
+      {
+        "source_group_id": "grp-6f66ae71bafc",
+        "splits": "train|val"
+      }
+    ],
+    "cross_split_candidate_pairs_in_groups": 996
+  },
+  "roles": {
+    "original_candidates": 496,
+    "original_high_confidence": 496,
+    "augmented_variants": 8520,
+    "caveat": "best-effort recovery from the dataset's own naming scheme and the Phase 1 dimension finding; a group without a 227x227 member has no high-confidence original"
+  },
+  "near_duplicate_candidates": {
+    "phase1_candidate_pairs": 25607,
+    "new_dhash_couples_within_groups": 0,
+    "total_candidate_pairs": 25607,
+    "status": "CANDIDATES ONLY - not confirmed duplicates",
+    "ssim_crosscheck": {
+      "method": "global mean SSIM, 64x64 grayscale, 11x11 gaussian window sigma=1.5, C1/C2 per Wang et al. 2004 (numpy-only, deterministic); re-decoded from raw files",
+      "purpose": "cross-validation of perceptual-hash candidate pairs (roadmap Phase 2 task 3); corroboration only \u2014 no grouping is changed by SSIM",
+      "pairs_expected": 25607,
+      "pairs_computed": 25607,
+      "ssim_errors": 0,
+      "histogram": {
+        "ssim_0.60_0.80": 2272,
+        "ssim_0.80_0.90": 4078,
+        "ssim_exactly_1": 273,
+        "ssim_ge_0.90": 17845,
+        "ssim_lt_0.60": 1139
+      },
+      "min_ssim": -0.357089,
+      "max_ssim": 1.0,
+      "pairs_below_0.60": 1139,
+      "lowest_examples": [
+        {
+          "file_a": "train/benign/benign (114)-rotated2-sharpened.png",
+          "file_b": "train/benign/benign (61)-rotated2-rotated1.png",
+          "dhash": 7,
+          "ssim": -0.357089
+        },
+        {
+          "file_a": "train/benign/benign (114)-rotated2-sharpened.png",
+          "file_b": "train/benign/benign (61)-rotated1-sharpened.png",
+          "dhash": 6,
+          "ssim": -0.313476
+        },
+        {
+          "file_a": "train/benign/benign (114)-rotated2-rotated2.png",
+          "file_b": "train/benign/benign (61)-rotated2-rotated1.png",
+          "dhash": 4,
+          "ssim": -0.303684
+        },
+        {
+          "file_a": "train/benign/benign (114)-rotated2-sharpened.png",
+          "file_b": "train/benign/benign (61)-rotated2.jpg",
+          "dhash": 7,
+          "ssim": -0.300292
+        },
+        {
+          "file_a": "train/benign/benign (114)-rotated2-sharpened.png",
+          "file_b": "train/benign/benign (61)-rotated2-sharpened.png",
+          "dhash": 6,
+          "ssim": -0.29061
+        },
+        {
+          "file_a": "train/benign/benign (114)-rotated2-sharpened.png",
+          "file_b": "train/benign/benign (61)-sharpened-rotated1.png",
+          "dhash": 7,
+          "ssim": -0.272779
+        },
+        {
+          "file_a": "train/benign/benign (114)-rotated2-rotated2.png",
+          "file_b": "train/benign/benign (61)-rotated1-sharpened.png",
+          "dhash": 5,
+          "ssim": -0.258498
+        },
+        {
+          "file_a": "train/benign/benign (114)-rotated2-rotated1.png",
+          "file_b": "train/benign/benign (61)-rotated2-rotated1.png",
+          "dhash": 7,
+          "ssim": -0.252397
+        },
+        {
+          "file_a": "train/benign/benign (114)-rotated1.jpg",
+          "file_b": "train/benign/benign (61)-rotated2-rotated1.png",
+          "dhash": 6,
+          "ssim": -0.249404
+        },
+        {
+          "file_a": "train/benign/benign (114)-rotated2-rotated2.png",
+          "file_b": "train/benign/benign (61)-rotated2.jpg",
+          "dhash": 6,
+          "ssim": -0.244563
+        }
+      ]
+    }
+  },
+  "ungrouped_low_confidence": {
+    "count": 0,
+    "definition": "files in low-confidence groups (no lineage and no exact duplicate) \u2014 none expected in this dataset (grammar parse rate was 100%)"
+  }
+}

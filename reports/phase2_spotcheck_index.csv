@@ -1,0 +1,161 @@
+section,relationship,file_a,file_b,dhash_d,ssim_64,group_id,split_a,split_b
+S1,CONFIRMED same source key (malignant (83); chain rotated1|rotated1),train/malignant/malignant (83)-rotated1-rotated1.png,,,,grp-0013591ebd00,train,
+S1,CONFIRMED same source key (malignant (83); chain rotated1|rotated2),train/malignant/malignant (83)-rotated1-rotated2.png,,,,grp-0013591ebd00,train,
+S1,CONFIRMED same source key (malignant (83); chain rotated1|rotated32),train/malignant/malignant (83)-rotated1-rotated32.png,,,,grp-0013591ebd00,train,
+S1,CONFIRMED same source key (malignant (83); chain rotated1|sharpened),train/malignant/malignant (83)-rotated1-sharpened.png,,,,grp-0013591ebd00,train,
+S1,CONFIRMED same source key (malignant (83); chain rotated1),train/malignant/malignant (83)-rotated1.png,,,,grp-0013591ebd00,train,
+S1,CONFIRMED same source key (malignant (83); chain rotated2|rotated1),train/malignant/malignant (83)-rotated2-rotated1.png,,,,grp-0013591ebd00,train,
+S1,CONFIRMED same source key (malignant (83); chain rotated2|rotated2),train/malignant/malignant (83)-rotated2-rotated2.png,,,,grp-0013591ebd00,train,
+S1,CONFIRMED same source key (malignant (83); chain rotated2|rotated32),train/malignant/malignant (83)-rotated2-rotated32.png,,,,grp-0013591ebd00,train,
+S1,CONFIRMED same source key (malignant (83); chain rotated2|sharpened),train/malignant/malignant (83)-rotated2-sharpened.png,,,,grp-0013591ebd00,train,
+S1,CONFIRMED same source key (malignant (83); chain rotated2),train/malignant/malignant (83)-rotated2.png,,,,grp-0013591ebd00,train,
+S1,CONFIRMED same source key (malignant (83); chain rotated32|rotated1),train/malignant/malignant (83)-rotated32-rotated1.png,,,,grp-0013591ebd00,train,
+S1,CONFIRMED same source key (malignant (83); chain rotated32|rotated2),train/malignant/malignant (83)-rotated32-rotated2.png,,,,grp-0013591ebd00,train,
+S2,CONFIRMED md5-identical (group exact-030c992fa36c),train/benign/benign (282)-rotated1.jpg,,,,grp-8732aecc9e8e,train,
+S2,CONFIRMED md5-identical (group exact-030c992fa36c),train/benign/benign (282)-rotated2.jpg,,,,grp-8732aecc9e8e,train,
+S2,CONFIRMED md5-identical (group exact-05b33043a369),train/malignant/malignant (98)-sharpened-rotated32.png,,,,grp-904d1218b85a,train,
+S2,CONFIRMED md5-identical (group exact-05b33043a369),train/malignant/malignant (98)-sharpened.png,,,,grp-904d1218b85a,train,
+S2,CONFIRMED md5-identical (group exact-060e15ca16f3),train/malignant/malignant (108)-rotated1-sharpened.png,,,,grp-19834a45fb02,train,
+S2,CONFIRMED md5-identical (group exact-060e15ca16f3),train/malignant/malignant (108)-sharpened.png,,,,grp-19834a45fb02,train,
+S2,CONFIRMED md5-identical (group exact-06242ab38a6b),train/benign/benign (259)-sharpened-rotated2.png,,,,grp-3077a42b7b03,train,
+S2,CONFIRMED md5-identical (group exact-06242ab38a6b),train/benign/benign (259)-sharpened.png,,,,grp-3077a42b7b03,train,
+S2,CONFIRMED md5-identical (group exact-06a51a1d5d96),train/malignant/malignant (141)-sharpened-rotated1.png,,,,grp-09d7688fa9cc,train,
+S2,CONFIRMED md5-identical (group exact-06a51a1d5d96),train/malignant/malignant (141)-sharpened.png,,,,grp-09d7688fa9cc,train,
+S2,CONFIRMED md5-identical (group exact-077c10797773),train/malignant/malignant (69)-rotated2-rotated1.png,,,,grp-deb68c528ef1,train,
+S2,CONFIRMED md5-identical (group exact-077c10797773),train/malignant/malignant (69)-rotated2-rotated2.png,,,,grp-deb68c528ef1,train,
+S2,CONFIRMED md5-identical (group exact-0b06c77eed9d),train/malignant/malignant (208)-rotated2-rotated1.png,,,,grp-1cfe03f732cc,train,
+S2,CONFIRMED md5-identical (group exact-0b06c77eed9d),train/malignant/malignant (208)-rotated2-rotated2.png,,,,grp-1cfe03f732cc,train,
+S2,CONFIRMED md5-identical (group exact-0ccba4fc273a),train/benign/benign (164)-sharpened-rotated2.png,,,,grp-4f3b27a5d050,train,
+S2,CONFIRMED md5-identical (group exact-0ccba4fc273a),train/benign/benign (164)-sharpened.png,,,,grp-4f3b27a5d050,train,
+S2,CONFIRMED md5-identical (group exact-0d5710a90b7e),train/benign/benign (138)-rotated1-sharpened.png,,,,grp-8e6325a5876d,train,
+S2,CONFIRMED md5-identical (group exact-0d5710a90b7e),train/benign/benign (138)-sharpened.png,,,,grp-8e6325a5876d,train,
+S2,CONFIRMED md5-identical (group exact-0e08b7e9b84e),train/malignant/malignant (49)-rotated32-rotated1.png,,,,grp-f6342b9209af,train,
+S2,CONFIRMED md5-identical (group exact-0e08b7e9b84e),train/malignant/malignant (49)-rotated32-rotated2.png,,,,grp-f6342b9209af,train,
+S2,CONFIRMED md5-identical (group exact-0f2503fdcaa2),train/benign/benign (213)-rotated1-sharpened.png,,,,grp-0bd884a1eaaa,train,
+S2,CONFIRMED md5-identical (group exact-0f2503fdcaa2),train/benign/benign (213)-sharpened.png,,,,grp-0bd884a1eaaa,train,
+S2,CONFIRMED md5-identical (group exact-12f9f25513ca),train/benign/benign (237)-rotated1-sharpened.png,,,,grp-29b8f2aa6fbf,train,
+S2,CONFIRMED md5-identical (group exact-12f9f25513ca),train/benign/benign (237)-rotated2-sharpened.png,,,,grp-29b8f2aa6fbf,train,
+S3,CONFIRMED same source key; chain depth 0 (base/original candidate); role=original_candidate/high,val/benign/benign (23).png,,,,grp-e35c859a925c,val,
+S3,CONFIRMED same source key; chain depth 8 (rotated1); role=augmented_variant/high,val/benign/benign (23)-rotated1.jpg,,,,grp-e35c859a925c,val,
+S3,CONFIRMED same source key; chain depth 8 (rotated1); role=augmented_variant/high,val/benign/benign (23)-rotated1.png,,,,grp-e35c859a925c,val,
+S3,CONFIRMED same source key; chain depth 8 (rotated2); role=augmented_variant/high,val/benign/benign (23)-rotated2.jpg,,,,grp-e35c859a925c,val,
+S3,CONFIRMED same source key; chain depth 8 (rotated2); role=augmented_variant/high,val/benign/benign (23)-rotated2.png,,,,grp-e35c859a925c,val,
+S3,CONFIRMED same source key; chain depth 9 (sharpened); role=augmented_variant/high,val/benign/benign (23)-sharpened.jpg,,,,grp-e35c859a925c,val,
+S3,CONFIRMED same source key; chain depth 9 (sharpened); role=augmented_variant/high,val/benign/benign (23)-sharpened.png,,,,grp-e35c859a925c,val,
+S3,CONFIRMED same source key; chain depth 17 (rotated1|rotated1); role=augmented_variant/high,val/benign/benign (23)-rotated1-rotated1.png,,,,grp-e35c859a925c,val,
+S3,CONFIRMED same source key; chain depth 17 (rotated1|rotated2); role=augmented_variant/high,val/benign/benign (23)-rotated1-rotated2.png,,,,grp-e35c859a925c,val,
+S3,CONFIRMED same source key; chain depth 17 (rotated2|rotated1); role=augmented_variant/high,val/benign/benign (23)-rotated2-rotated1.png,,,,grp-e35c859a925c,val,
+S3,CONFIRMED same source key; chain depth 17 (rotated2|rotated2); role=augmented_variant/high,val/benign/benign (23)-rotated2-rotated2.png,,,,grp-e35c859a925c,val,
+S3,CONFIRMED same source key; chain depth 18 (rotated1|sharpened); role=augmented_variant/high,val/benign/benign (23)-rotated1-sharpened.png,,,,grp-e35c859a925c,val,
+S4,CONFIRMED same source key; largest family; chain rotated1|rotated1|rotated1,val/malignant/malignant (1)-rotated1-rotated1-rotated1.png,,,,grp-77687eacca02,val,
+S4,CONFIRMED same source key; largest family; chain rotated1|rotated1|rotated2,val/malignant/malignant (1)-rotated1-rotated1-rotated2.png,,,,grp-77687eacca02,val,
+S4,CONFIRMED same source key; largest family; chain rotated1|rotated1|rotated32,val/malignant/malignant (1)-rotated1-rotated1-rotated32.png,,,,grp-77687eacca02,val,
+S4,CONFIRMED same source key; largest family; chain rotated1|rotated1|sharpened,val/malignant/malignant (1)-rotated1-rotated1-sharpened.png,,,,grp-77687eacca02,val,
+S4,CONFIRMED same source key; largest family; chain rotated1|rotated1,val/malignant/malignant (1)-rotated1-rotated1.png,,,,grp-77687eacca02,val,
+S4,CONFIRMED same source key; largest family; chain rotated1|rotated2|rotated1,val/malignant/malignant (1)-rotated1-rotated2-rotated1.png,,,,grp-77687eacca02,val,
+S4,CONFIRMED same source key; largest family; chain rotated1|rotated2|rotated2,val/malignant/malignant (1)-rotated1-rotated2-rotated2.png,,,,grp-77687eacca02,val,
+S4,CONFIRMED same source key; largest family; chain rotated1|rotated2|rotated32,val/malignant/malignant (1)-rotated1-rotated2-rotated32.png,,,,grp-77687eacca02,val,
+S4,CONFIRMED same source key; largest family; chain rotated1|rotated2|sharpened,val/malignant/malignant (1)-rotated1-rotated2-sharpened.png,,,,grp-77687eacca02,val,
+S4,CONFIRMED same source key; largest family; chain rotated1|rotated2,val/malignant/malignant (1)-rotated1-rotated2.png,,,,grp-77687eacca02,val,
+S4,CONFIRMED same source key; largest family; chain rotated1|rotated32|rotated1,val/malignant/malignant (1)-rotated1-rotated32-rotated1.png,,,,grp-77687eacca02,val,
+S4,CONFIRMED same source key; largest family; chain rotated1|rotated32|rotated2,val/malignant/malignant (1)-rotated1-rotated32-rotated2.png,,,,grp-77687eacca02,val,
+S5,CONFIRMED same source key; role=original_candidate/high (rule chain_free+base_dimension_227x227),train/benign/benign (290).png,,,,grp-244973d6f450,train,
+S6,"NEAR-DUP CANDIDATE, CROSS-SPLIT, same source key (family-level leak)",train/malignant/malignant (18)-sharpened.png,val/malignant/malignant (18).png,0,0.977603,,train,val
+S6,"NEAR-DUP CANDIDATE, CROSS-SPLIT, same source key (family-level leak)",train/benign/benign (36)-sharpened-sharpened.png,val/benign/benign (36).png,2,0.783334,,train,val
+S6,"NEAR-DUP CANDIDATE, CROSS-SPLIT, same source key (family-level leak)",train/benign/benign (36)-sharpened.jpg,val/benign/benign (36).png,2,0.984192,,train,val
+S6,"NEAR-DUP CANDIDATE, CROSS-SPLIT, same source key (family-level leak)",train/benign/benign (36)-sharpened.png,val/benign/benign (36).png,2,0.986033,,train,val
+S6,"NEAR-DUP CANDIDATE, CROSS-SPLIT, same source key (family-level leak)",train/malignant/malignant (18)-rotated32-sharpened.png,val/malignant/malignant (18)-rotated1-rotated2.png,2,0.968219,,train,val
+S6,"NEAR-DUP CANDIDATE, CROSS-SPLIT, same source key (family-level leak)",train/malignant/malignant (18)-rotated32.png,val/malignant/malignant (18)-rotated1-rotated32.png,3,0.987972,,train,val
+S6,"NEAR-DUP CANDIDATE, CROSS-SPLIT, same source key (family-level leak)",train/malignant/malignant (18)-sharpened-rotated32.png,val/malignant/malignant (18)-rotated1.png,3,0.970231,,train,val
+S6,"NEAR-DUP CANDIDATE, CROSS-SPLIT, same source key (family-level leak)",train/malignant/malignant (18)-sharpened.png,val/malignant/malignant (18)-rotated1-sharpened.png,4,0.993615,,train,val
+S6,"NEAR-DUP CANDIDATE, CROSS-SPLIT, same source key (family-level leak)",train/benign/benign (36)-sharpened-sharpened.png,val/benign/benign (36)-rotated1.jpg,5,0.773582,,train,val
+S6,"NEAR-DUP CANDIDATE, CROSS-SPLIT, same source key (family-level leak)",train/benign/benign (36)-sharpened.jpg,val/benign/benign (36)-rotated1.jpg,5,0.973409,,train,val
+S6,"NEAR-DUP CANDIDATE, CROSS-SPLIT, same source key (family-level leak)",train/benign/benign (36)-sharpened.png,val/benign/benign (36)-rotated1.jpg,5,0.976455,,train,val
+S6,"NEAR-DUP CANDIDATE, CROSS-SPLIT, same source key (family-level leak)",train/malignant/malignant (18)-rotated32-sharpened.png,val/malignant/malignant (18)-rotated2-rotated32.png,5,0.968837,,train,val
+S6,"NEAR-DUP CANDIDATE, CROSS-SPLIT, same source key (family-level leak)",train/malignant/malignant (18)-sharpened-rotated32.png,val/malignant/malignant (18)-rotated2.png,5,0.963871,,train,val
+S6,"NEAR-DUP CANDIDATE, CROSS-SPLIT, same source key (family-level leak)",train/malignant/malignant (18)-sharpened-sharpened.png,val/malignant/malignant (18).png,5,0.881611,,train,val
+S6,"NEAR-DUP CANDIDATE, CROSS-SPLIT, same source key (family-level leak)",train/benign/benign (36)-sharpened-sharpened.png,val/benign/benign (36)-rotated1.png,6,0.778873,,train,val
+S6,"NEAR-DUP CANDIDATE, CROSS-SPLIT, same source key (family-level leak)",train/malignant/malignant (18)-rotated32.png,val/malignant/malignant (18)-rotated2-rotated2.png,6,0.946323,,train,val
+S6,"NEAR-DUP CANDIDATE, CROSS-SPLIT, same source key (family-level leak)",train/malignant/malignant (18)-sharpened-rotated2.png,val/malignant/malignant (18).png,6,0.976034,,train,val
+S6,"NEAR-DUP CANDIDATE, CROSS-SPLIT, same source key (family-level leak)",train/malignant/malignant (18)-rotated32-rotated2.png,val/malignant/malignant (18)-rotated2-rotated32.png,7,0.957437,,train,val
+S6,"NEAR-DUP CANDIDATE, CROSS-SPLIT, same source key (family-level leak)",train/malignant/malignant (18)-sharpened-sharpened.png,val/malignant/malignant (18)-rotated1-sharpened.png,7,0.943092,,train,val
+S7,"NEAR-DUP CANDIDATE, CROSS-SPLIT, CROSS-KEY (benign (128) vs benign (30))",train/benign/benign (128)-rotated1.png,val/benign/benign (30)-rotated1-sharpened.png,0,0.788919,,train,val
+S7,"NEAR-DUP CANDIDATE, CROSS-SPLIT, CROSS-KEY (benign (130) vs benign (33))",train/benign/benign (130)-rotated2.png,val/benign/benign (33)-rotated1-rotated2.png,0,0.829286,,train,val
+S7,"NEAR-DUP CANDIDATE, CROSS-SPLIT, CROSS-KEY (benign (150) vs benign (19))",train/benign/benign (150)-rotated1.png,val/benign/benign (19)-sharpened-rotated1.png,1,0.879518,,train,val
+S7,"NEAR-DUP CANDIDATE, CROSS-SPLIT, CROSS-KEY (benign (151) vs benign (16))",train/benign/benign (151)-rotated1-rotated2.png,val/benign/benign (16)-rotated2-rotated2.png,0,0.820825,,train,val
+S7,"NEAR-DUP CANDIDATE, CROSS-SPLIT, CROSS-KEY (benign (153) vs benign (25))",train/benign/benign (153)-rotated1-rotated2.png,val/benign/benign (25)-rotated1-rotated2.png,1,0.772335,,train,val
+S7,"NEAR-DUP CANDIDATE, CROSS-SPLIT, CROSS-KEY (benign (154) vs benign (21))",train/benign/benign (154)-rotated1.jpg,val/benign/benign (21)-sharpened.jpg,3,0.517624,,train,val
+S7,"NEAR-DUP CANDIDATE, CROSS-SPLIT, CROSS-KEY (benign (177) vs benign (35))",train/benign/benign (177)-rotated1-rotated1.png,val/benign/benign (35)-sharpened-rotated1.png,0,0.87118,,train,val
+S7,"NEAR-DUP CANDIDATE, CROSS-SPLIT, CROSS-KEY (benign (62) vs malignant (1))",train/benign/benign (62)-rotated2-rotated2.png,val/malignant/malignant (1)-sharpened-rotated2-sharpened.png,6,0.1131,,train,val
+S7,"NEAR-DUP CANDIDATE, CROSS-SPLIT, CROSS-KEY (malignant (1) vs malignant (132))",train/malignant/malignant (132)-rotated32.png,val/malignant/malignant (1)-sharpened-rotated2-rotated1.png,3,0.353093,,train,val
+S7,"NEAR-DUP CANDIDATE, CROSS-SPLIT, CROSS-KEY (malignant (10) vs malignant (112))",train/malignant/malignant (112)-sharpened-rotated2.png,val/malignant/malignant (10)-rotated2-rotated1.png,0,0.601677,,train,val
+S7,"NEAR-DUP CANDIDATE, CROSS-SPLIT, CROSS-KEY (malignant (109) vs malignant (13))",train/malignant/malignant (109)-rotated2-rotated1.png,val/malignant/malignant (13)-rotated1-rotated32.png,1,0.823495,,train,val
+S7,"NEAR-DUP CANDIDATE, CROSS-SPLIT, CROSS-KEY (malignant (110) vs malignant (12))",train/malignant/malignant (110)-rotated2-rotated1.png,val/malignant/malignant (12)-rotated1.png,0,0.921992,,train,val
+S7,"NEAR-DUP CANDIDATE, CROSS-SPLIT, CROSS-KEY (malignant (111) vs malignant (15))",train/malignant/malignant (111)-rotated1-sharpened.png,val/malignant/malignant (15)-sharpened.png,0,0.942841,,train,val
+S7,"NEAR-DUP CANDIDATE, CROSS-SPLIT, CROSS-KEY (malignant (114) vs malignant (14))",train/malignant/malignant (114)-rotated1.png,val/malignant/malignant (14)-rotated2-sharpened.png,2,0.183345,,train,val
+S7,"NEAR-DUP CANDIDATE, CROSS-SPLIT, CROSS-KEY (malignant (116) vs malignant (18))",train/malignant/malignant (116)-rotated2.png,val/malignant/malignant (18)-rotated1-sharpened.png,1,0.972343,,train,val
+S7,"NEAR-DUP CANDIDATE, CROSS-SPLIT, CROSS-KEY (malignant (123) vs malignant (14))",train/malignant/malignant (123)-rotated32-rotated32.png,val/malignant/malignant (14)-rotated2-rotated2.png,0,0.771368,,train,val
+S7,"NEAR-DUP CANDIDATE, CROSS-SPLIT, CROSS-KEY (malignant (16) vs malignant (197))",train/malignant/malignant (197)-rotated2-sharpened.png,val/malignant/malignant (16)-rotated1-rotated32.png,6,0.392746,,train,val
+S7,"NEAR-DUP CANDIDATE, CROSS-SPLIT, CROSS-KEY (malignant (16) vs malignant (202))",train/malignant/malignant (202)-rotated1-sharpened.png,val/malignant/malignant (16)-rotated1-rotated1.png,7,0.35623,,train,val
+S7,"NEAR-DUP CANDIDATE, CROSS-SPLIT, CROSS-KEY (malignant (17) vs malignant (88))",train/malignant/malignant (88)-rotated32.png,val/malignant/malignant (17)-rotated2.png,0,0.816291,,train,val
+S8,"NEAR-DUP CANDIDATE at dHash 0, CROSS-KEY same-split - plausibility of dHash-0 across distinct keys",train/benign/benign (105)-rotated1-rotated1.png,train/benign/benign (156)-rotated1-rotated1.png,0,0.919767,,train,train
+S8,"NEAR-DUP CANDIDATE at dHash 0, CROSS-KEY same-split - plausibility of dHash-0 across distinct keys",train/benign/benign (132)-sharpened.jpg,train/benign/benign (38).png,0,0.828602,,train,train
+S8,"NEAR-DUP CANDIDATE at dHash 0, CROSS-KEY same-split - plausibility of dHash-0 across distinct keys",train/benign/benign (139)-rotated2-sharpened.png,train/benign/benign (157)-rotated1.jpg,0,0.934287,,train,train
+S8,"NEAR-DUP CANDIDATE at dHash 0, CROSS-KEY same-split - plausibility of dHash-0 across distinct keys",train/benign/benign (164)-rotated2.jpg,train/benign/benign (85)-sharpened-rotated2.png,0,0.901667,,train,train
+S8,"NEAR-DUP CANDIDATE at dHash 0, CROSS-KEY same-split - plausibility of dHash-0 across distinct keys",train/benign/benign (164)-sharpened.png,train/benign/benign (85)-sharpened.jpg,0,0.959743,,train,train
+S8,"NEAR-DUP CANDIDATE at dHash 0, CROSS-KEY same-split - plausibility of dHash-0 across distinct keys",train/benign/benign (204)-sharpened.jpg,train/benign/benign (249)-sharpened.jpg,0,0.947171,,train,train
+S8,"NEAR-DUP CANDIDATE at dHash 0, CROSS-KEY same-split - plausibility of dHash-0 across distinct keys",train/benign/benign (216)-sharpened-rotated1.png,train/benign/benign (265)-rotated1.png,0,0.735275,,train,train
+S8,"NEAR-DUP CANDIDATE at dHash 0, CROSS-KEY same-split - plausibility of dHash-0 across distinct keys",train/benign/benign (220).png,train/benign/benign (271).png,0,0.863886,,train,train
+S8,"NEAR-DUP CANDIDATE at dHash 0, CROSS-KEY same-split - plausibility of dHash-0 across distinct keys",train/benign/benign (232)-sharpened-sharpened.png,train/benign/benign (287)-sharpened.jpg,0,0.718556,,train,train
+S8,"NEAR-DUP CANDIDATE at dHash 0, CROSS-KEY same-split - plausibility of dHash-0 across distinct keys",train/benign/benign (263)-sharpened-sharpened.png,train/benign/benign (278)-sharpened-sharpened.png,0,0.917116,,train,train
+S8,"NEAR-DUP CANDIDATE at dHash 0, CROSS-KEY same-split - plausibility of dHash-0 across distinct keys",train/benign/benign (276)-sharpened.png,train/benign/benign (287)-sharpened.jpg,0,0.980708,,train,train
+S8,"NEAR-DUP CANDIDATE at dHash 0, CROSS-KEY + CROSS-SPLIT - plausibility of dHash-0 across distinct keys",train/malignant/malignant (110)-rotated2-rotated1.png,val/malignant/malignant (12)-rotated2-sharpened.png,0,0.890827,,train,val
+S9,NEAR-DUP CANDIDATE with SSIM<0.60 - dHash over-grouping risk,train/benign/benign (114)-rotated2-sharpened.png,train/benign/benign (61)-rotated2-rotated1.png,7,-0.357089,,train,train
+S9,NEAR-DUP CANDIDATE with SSIM<0.60 - dHash over-grouping risk,train/benign/benign (114)-rotated2-sharpened.png,train/benign/benign (61)-rotated1-sharpened.png,6,-0.313476,,train,train
+S9,NEAR-DUP CANDIDATE with SSIM<0.60 - dHash over-grouping risk,train/benign/benign (114)-rotated2-sharpened.png,train/benign/benign (61)-rotated2.jpg,7,-0.300292,,train,train
+S9,NEAR-DUP CANDIDATE with SSIM<0.60 - dHash over-grouping risk,train/benign/benign (114)-rotated2-sharpened.png,train/benign/benign (61)-rotated2-sharpened.png,6,-0.29061,,train,train
+S9,NEAR-DUP CANDIDATE with SSIM<0.60 - dHash over-grouping risk,train/benign/benign (114)-rotated2-sharpened.png,train/benign/benign (61)-sharpened-rotated1.png,7,-0.272779,,train,train
+S9,NEAR-DUP CANDIDATE with SSIM<0.60 - dHash over-grouping risk,train/benign/benign (114)-rotated2-rotated2.png,train/benign/benign (61)-rotated1-sharpened.png,5,-0.258498,,train,train
+S9,NEAR-DUP CANDIDATE with SSIM<0.60 - dHash over-grouping risk,train/benign/benign (114)-rotated2-rotated1.png,train/benign/benign (61)-rotated2-rotated1.png,7,-0.252397,,train,train
+S9,NEAR-DUP CANDIDATE with SSIM<0.60 - dHash over-grouping risk,train/benign/benign (114)-rotated1.jpg,train/benign/benign (61)-rotated2-rotated1.png,6,-0.249404,,train,train
+S9,NEAR-DUP CANDIDATE with SSIM<0.60 - dHash over-grouping risk,train/benign/benign (114)-rotated2-rotated2.png,train/benign/benign (61)-rotated2.jpg,6,-0.244563,,train,train
+S9,NEAR-DUP CANDIDATE with SSIM<0.60 - dHash over-grouping risk,train/benign/benign (114)-rotated2-rotated2.png,train/benign/benign (61)-rotated2-sharpened.png,5,-0.235985,,train,train
+S9,NEAR-DUP CANDIDATE with SSIM<0.60 - dHash over-grouping risk,train/benign/benign (114)-rotated2.png,train/benign/benign (61)-rotated2.png,7,-0.234726,,train,train
+S9,NEAR-DUP CANDIDATE with SSIM<0.60 - dHash over-grouping risk,train/benign/benign (114)-rotated2.png,train/benign/benign (61).png,7,-0.233709,,train,train
+S10,CONFIRMED same source key; multi-split family (benign (36)); split=train,train/benign/benign (36)-rotated1-rotated2.png,,,,grp-3281cc7851ab,train,
+S10,CONFIRMED same source key; multi-split family (benign (36)); split=train,train/benign/benign (36)-rotated1-sharpened.png,,,,grp-3281cc7851ab,train,
+S10,CONFIRMED same source key; multi-split family (benign (36)); split=train,train/benign/benign (36)-rotated2-rotated1.png,,,,grp-3281cc7851ab,train,
+S10,CONFIRMED same source key; multi-split family (benign (36)); split=train,train/benign/benign (36)-rotated2-rotated2.png,,,,grp-3281cc7851ab,train,
+S10,CONFIRMED same source key; multi-split family (benign (36)); split=train,train/benign/benign (36)-rotated2-sharpened.png,,,,grp-3281cc7851ab,train,
+S10,CONFIRMED same source key; multi-split family (benign (36)); split=train,train/benign/benign (36)-rotated2.jpg,,,,grp-3281cc7851ab,train,
+S10,CONFIRMED same source key; multi-split family (benign (36)); split=train,train/benign/benign (36)-rotated2.png,,,,grp-3281cc7851ab,train,
+S10,CONFIRMED same source key; multi-split family (benign (36)); split=train,train/benign/benign (36)-sharpened-rotated1.png,,,,grp-3281cc7851ab,train,
+S10,CONFIRMED same source key; multi-split family (benign (36)); split=train,train/benign/benign (36)-sharpened-rotated2.png,,,,grp-3281cc7851ab,train,
+S10,CONFIRMED same source key; multi-split family (benign (36)); split=train,train/benign/benign (36)-sharpened-sharpened.png,,,,grp-3281cc7851ab,train,
+S10,CONFIRMED same source key; multi-split family (benign (36)); split=train,train/benign/benign (36)-sharpened.jpg,,,,grp-3281cc7851ab,train,
+S10,CONFIRMED same source key; multi-split family (benign (36)); split=train,train/benign/benign (36)-sharpened.png,,,,grp-3281cc7851ab,train,
+S10,CONFIRMED same source key; multi-split family (benign (36)); split=val,val/benign/benign (36)-rotated1-rotated1.png,,,,grp-3281cc7851ab,val,
+S10,CONFIRMED same source key; multi-split family (benign (36)); split=val,val/benign/benign (36)-rotated1.jpg,,,,grp-3281cc7851ab,val,
+S10,CONFIRMED same source key; multi-split family (benign (36)); split=val,val/benign/benign (36)-rotated1.png,,,,grp-3281cc7851ab,val,
+S10,CONFIRMED same source key; multi-split family (benign (36)); split=val,val/benign/benign (36).png,,,,grp-3281cc7851ab,val,
+S10,CONFIRMED same source key; multi-split family (malignant (18)); split=train,train/malignant/malignant (18)-rotated32-rotated1.png,,,,grp-6f66ae71bafc,train,
+S10,CONFIRMED same source key; multi-split family (malignant (18)); split=train,train/malignant/malignant (18)-rotated32-rotated2.png,,,,grp-6f66ae71bafc,train,
+S10,CONFIRMED same source key; multi-split family (malignant (18)); split=train,train/malignant/malignant (18)-rotated32-rotated32.png,,,,grp-6f66ae71bafc,train,
+S10,CONFIRMED same source key; multi-split family (malignant (18)); split=train,train/malignant/malignant (18)-rotated32-sharpened.png,,,,grp-6f66ae71bafc,train,
+S10,CONFIRMED same source key; multi-split family (malignant (18)); split=train,train/malignant/malignant (18)-rotated32.png,,,,grp-6f66ae71bafc,train,
+S10,CONFIRMED same source key; multi-split family (malignant (18)); split=train,train/malignant/malignant (18)-sharpened-rotated1.png,,,,grp-6f66ae71bafc,train,
+S10,CONFIRMED same source key; multi-split family (malignant (18)); split=train,train/malignant/malignant (18)-sharpened-rotated2.png,,,,grp-6f66ae71bafc,train,
+S10,CONFIRMED same source key; multi-split family (malignant (18)); split=train,train/malignant/malignant (18)-sharpened-rotated32.png,,,,grp-6f66ae71bafc,train,
+S10,CONFIRMED same source key; multi-split family (malignant (18)); split=train,train/malignant/malignant (18)-sharpened-sharpened.png,,,,grp-6f66ae71bafc,train,
+S10,CONFIRMED same source key; multi-split family (malignant (18)); split=train,train/malignant/malignant (18)-sharpened.png,,,,grp-6f66ae71bafc,train,
+S10,CONFIRMED same source key; multi-split family (malignant (18)); split=val,val/malignant/malignant (18)-rotated1-rotated1.png,,,,grp-6f66ae71bafc,val,
+S10,CONFIRMED same source key; multi-split family (malignant (18)); split=val,val/malignant/malignant (18)-rotated1-rotated2.png,,,,grp-6f66ae71bafc,val,
+S10,CONFIRMED same source key; multi-split family (malignant (18)); split=val,val/malignant/malignant (18)-rotated1-rotated32.png,,,,grp-6f66ae71bafc,val,
+S10,CONFIRMED same source key; multi-split family (malignant (18)); split=val,val/malignant/malignant (18)-rotated1-sharpened.png,,,,grp-6f66ae71bafc,val,
+S10,CONFIRMED same source key; multi-split family (malignant (18)); split=val,val/malignant/malignant (18)-rotated1.png,,,,grp-6f66ae71bafc,val,
+S10,CONFIRMED same source key; multi-split family (malignant (18)); split=val,val/malignant/malignant (18)-rotated2-rotated1.png,,,,grp-6f66ae71bafc,val,
+S10,CONFIRMED same source key; multi-split family (malignant (18)); split=val,val/malignant/malignant (18)-rotated2-rotated2.png,,,,grp-6f66ae71bafc,val,
+S10,CONFIRMED same source key; multi-split family (malignant (18)); split=val,val/malignant/malignant (18)-rotated2-rotated32.png,,,,grp-6f66ae71bafc,val,
+S10,CONFIRMED same source key; multi-split family (malignant (18)); split=val,val/malignant/malignant (18)-rotated2-sharpened.png,,,,grp-6f66ae71bafc,val,
+S10,CONFIRMED same source key; multi-split family (malignant (18)); split=val,val/malignant/malignant (18)-rotated2.png,,,,grp-6f66ae71bafc,val,
+S10,CONFIRMED same source key; multi-split family (malignant (18)); split=val,val/malignant/malignant (18).png,,,,grp-6f66ae71bafc,val,
