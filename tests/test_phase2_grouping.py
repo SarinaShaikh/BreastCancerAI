@@ -351,18 +351,22 @@ def v2_11():
     forbidden = re.compile(
         r"^\s*(import|from)\s+(torch|tensorflow|keras|sklearn|albumentations)\b",
         re.MULTILINE)
-    # Phase 1/2 boundary guard retained; Phase 6/7-approved modules
+    # Phase 1/2 boundary guard retained; Phase 6/7/8-approved modules
     # explicitly exempted (owner-authorized 2026-09-19; Phase 7 additions
-    # owner-authorized in the Phase 7 implementation instruction). The
-    # exemption is file-level and exact: ONLY these five files may import
-    # torch/sklearn. Any other file under src/ — including any new file in
-    # src/training/ or src/mil/ — still fails this guard.
+    # owner-authorized in the Phase 7 implementation instruction; Phase 8
+    # additions owner-authorized in the Phase 8 implementation instruction).
+    # The exemption is file-level and exact: ONLY these seven files may
+    # import torch/sklearn. Any other file under src/ — including any new
+    # file in src/training/, src/mil/, or src/models/ — still fails this
+    # guard.
     phase6_approved = {
         "src/training/metrics.py",
         "src/training/train_baseline.py",
         "src/mil/instance_generation.py",
         "src/mil/feature_extractor.py",
         "src/mil/aggregation.py",
+        "src/mil/dual_attention.py",
+        "src/models/dual_attention_mil.py",
     }
     for py in sorted((REPO / "src").rglob("*.py")):
         if py.relative_to(REPO).as_posix() in phase6_approved:

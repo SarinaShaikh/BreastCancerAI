@@ -395,7 +395,20 @@ def t17():
             if isinstance(node, ast.Attribute):
                 assert node.attr not in banned, (rel, node.attr)
     assert not (REPO / "model" / "baselines" / "transfer_learning.py").exists()
-    assert not (REPO / "src" / "models").exists()
+    # Phase 8 (owner-approved roadmap) places the Dual Attention MIL model
+    # under src/models/; exactly those authorized files are exempt. ANY
+    # OTHER file under src/models/ still fails this guard (future-guard
+    # retained, file-level exception pattern per V-11/V2-11 precedent).
+    phase8_approved_models = {
+        "__init__.py",
+        "dual_attention_mil.py",
+    }
+    models_dir = REPO / "src" / "models"
+    if models_dir.exists():
+        for py in sorted(models_dir.glob("*.py")):
+            assert py.name in phase8_approved_models, (
+                "unauthorized file in src/models/: "
+                f"{py.name} (Phase 6 boundary guard retained)")
     src_all = "\n".join((REPO / rel).read_text(encoding="utf-8")
                         for rel in targets)
     assert "torchvision.models" not in src_all

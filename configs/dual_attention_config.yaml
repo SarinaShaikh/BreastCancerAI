@@ -1,0 +1,89 @@
+# Phase 8 — Dual Attention MIL configuration (LOCKED design, owner-approved 2026-09-19)
+#
+# SCOPE: Phase 8 is architecture + implementation + tests + infrastructure
+# smoke test ONLY. The training settings below are RECORDED for the later
+# authorized experiment/training phase (D-B/D-G) — they are NOT executed in
+# Phase 8. No performance numbers exist for this model.
+
+dual_attention:
+  formulation: "two-stage channel attention -> instance attention (NOT two
+    sequential instance-attention modules; NOT gated/transformer/spatial/
+    self/cross attention; NOT top-k/max pooling)"
+
+  stage1_channel_attention:
+    type: "SE-style, per-instance (no cross-instance interaction)"
+    equation: "c = sigmoid(W2(ReLU(W1(h)))) ; h_tilde = c ⊙ h"
+    w1: {in: 128, out: 16, bias: true}     # 2,064 params
+    w2: {in: 16, out: 128, bias: true}     # 2,176 params
+    r: 16                                   # owner decision D-D
+    params: 4240                            # owner-approved erratum of 4,256
+
+  stage2_instance_attention:
+    type: "non-gated ABMIL — the UNMODIFIED Phase 7 SingleAttentionAggregator,
+      reused by composition (src/mil/aggregation.py stays the reference)"
+    equation: "u = tanh(V h_tilde + b); s = w^T u; a = softmax(s) within bag"
+    params: 16640
+    masked_logits: "-inf before softmax -> exactly-zero weights"
+    fully_masked_bag: "raises ValueError"
+
+  aggregation: "z = sum_i a_i * h_tilde_i (R^128)"
+  classifier: {type: "Linear(128 -> 1)", output: "raw logit (no sigmoid)",
+    params: 129, loss_compatible: "BCEWithLogitsLoss"}
+
+  parameter_counts:
+    trunk: 163536
+    channel_attention: 4240
+    instance_attention: 16640
+    classifier: 129
+    head_excluding_trunk: 21009
+    full_model: 184545
+    state_dict_elements: 185141   # trainable params + 596 BN buffer elements
+    note: "state-dict elements reported SEPARATELY, never conflated with
+      trainable parameters"
+
+paths:
+  primary: "dynamic/list (per-bag stacked tensors; no padding/duplication;
+    any bag size >= 1)"
+  convenience: "padded (B, N_max, 1, 224, 224) + bool mask; numerically
+    equivalent to dynamic (test-mandated)"
+
+# ---------------- training settings (RECORDED ONLY — not executed in Phase 8)
+training:
+  authorized: false            # belongs to the later experiment phase (D-G)
+  loss: "BCEWithLogitsLoss (unweighted; no pos_weight unless separately
+    authorized)"
+  optimizer: "Adam, lr 1e-3"
+  max_epochs: 20
+  early_stopping: {monitor: "validation bag ROC-AUC", patience: 5,
+    restore: "best checkpoint"}
+  threshold: 0.5               # fixed; never tuned on test
+  batch_size: 32
+  augmentation: "train-only horizontal flip p=0.5 (existing Phase 5/6 rule);
+    validation/test unaugmented"
+  staged_strategy:             # owner decision D-B
+    stage_a: "frozen trunk; dual attention + classifier only (21,009
+      trainable); may use the approved Phase 7 embedding cache"
+    stage_b: "joint trainable trunk (full 184,545 trainable); pixels only;
+      embedding cache FORBIDDEN"
+
+reproducibility:
+  seed: 20260918               # python random / numpy / torch
+  initialization: "fresh random (owner decision D-C); NO B1/B3/B4 weights,
+    NO ImageNet/pretrained weights — frozen Phase 6 baselines immutable"
+
+cache_policy:                  # owner decision D-F; Phase 7 rules authoritative
+  persistent_cache_now: false  # Phase 8 must NOT create a persistent cache
+  frozen_extractor_only: true
+  trainable_extractor: "cache forbidden (writer enforces)"
+  test_split: "never cached"
+  augmented_embeddings: "never cached"
+  identity: "SHA-256 manifest: architecture, weights hash, seed,
+    preprocessing v1.0.0, pipeline v1.0.1, split manifest SHA, frozen test
+    SHA, trainable flag"
+
+leakage:
+  splits: "frozen Phase 4 manifests; test SHA
+    959f1cd3d9f719195ac31af1a586d7c84824af1e23698ec7616c376714112b74"
+  test_access_during_development: "PROHIBITED"
+  bag_semantics: "one Phase 2 source_group_id = one bag; one image = one
+    instance; no new grouping; no patient/study/lesion identifiers"

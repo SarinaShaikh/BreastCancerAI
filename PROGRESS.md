@@ -73,8 +73,8 @@ Phase 4: 100% — Complete (2026-09-18; leakage-free group-level split; test set
 Phase 5: 100%
 Phase 5.5: 100% — Complete (2026-09-18; NEW bag-loader interface section, added by owner decision; validation 19/19 PASS)
 Phase 6: 100% — Complete (2026-09-19; committed `35570e7` and pushed; V-11/V2-11 resolved by owner-authorized minimal whitelist; STEP G executed exactly once; b1/b3/b4 frozen, test evaluated)
-Phase 7: 90% — MIL pipeline implemented and validated 2026-09-19: instance adapter (thin layer over Phase 5.5 loader), fresh 128-d trunk extractor (freeze/train modes), leakage-safe embedding cache, single-attention ABMIL + Linear(128→1) head; Phase 7 suite 15/15 PASS; train-only smoke test (8 bags/146 instances, joint backward + frozen cache round-trip) PASS; all regressions green; uncommitted — awaiting owner review/commit authorization. No training experiment, no test access, no performance claims (D4).
-Phase 8: 0%
+Phase 7: 100% — Complete (2026-09-19; committed `8fabaa1` and pushed; 15/15 + smoke PASS; V-11/V2-11 whitelists extended by owner authorization)
+Phase 8: 90% — Dual Attention MIL implemented and validated 2026-09-19 (locked design D-A…D-G): Stage-1 SE channel attention (r=16, 4,240 params) → Stage-2 instance attention (Phase 7 ABMIL reused unchanged, 16,640) → Linear(128→1) raw logit (129); full model 184,545 trainable (185,141 state-dict elements, owner-approved +16 erratum applied); Phase 8 suite TDA-01…14 **14/14 PASS** incl. ablation guard (genuine dual attention proven), uniform-gate reduction to Phase 7 ABMIL, locked parameter assertions, and train-only smoke (8 bags/146 instances, joint backward + temp-cache round-trip); all regressions green; uncommitted — awaiting owner review/commit authorization. NO training, NO test access, NO persistent cache, NO performance claims (D-G).
 Phase 9: 0%
 Phase 10: 0%
 Phase 11: 0%
@@ -714,7 +714,7 @@ Phase 3 (bag definition) and Phase 6 (baseline feature extractor candidates) com
 
 # Phase 8 — Dual Attention MIL Model
 
-**Status:** [ ] Not Started
+**Status:** [x] Complete (2026-09-19 — architecture implemented, documented, and passing all unit tests 14/14; uncommitted — awaiting owner review/commit authorization; NO training, NO test access, NO performance claims per locked decisions D-B/D-G)
 
 ### Objective
 Implement the core research contribution: a genuine Dual Attention MIL architecture with two complementary attention mechanisms/stages.
@@ -726,15 +726,18 @@ This is the central novel component of the project and must be implemented rigor
 Phase 7 complete.
 
 ### Tasks
-- [ ] Design the first attention mechanism (e.g., instance-level attention scoring within a bag).
-- [ ] Design the second, complementary attention mechanism (e.g., channel/feature-level attention, or a second-stage refinement attention over the first attention's output — architecture choice must be documented and justified).
-- [ ] Implement combination/fusion of the two attention stages into a final instance weighting.
-- [ ] Implement bag-level feature aggregation using the dual attention weights.
-- [ ] Implement the classification head on top of the aggregated bag representation.
-- [ ] Ensure the model can return raw attention weights (both stages) for later explainability use (Phase 11).
-- [ ] Produce an architecture diagram covering: instance feature extraction → attention stage 1 → attention stage 2 → weighting → aggregation → bag representation → classification head.
-- [ ] Write architecture documentation explaining the mathematical formulation of both attention mechanisms.
-- [ ] Implement unit tests confirming attention weight output shapes match instance counts per bag.
+- [x] Design the first attention mechanism (e.g., instance-level attention scoring within a bag).
+- [x] Design the second, complementary attention mechanism (e.g., channel/feature-level attention, or a second-stage refinement attention over the first attention's output — architecture choice must be documented and justified).
+- [x] Implement combination/fusion of the two attention stages into a final instance weighting.
+- [x] Implement bag-level feature aggregation using the dual attention weights.
+- [x] Implement the classification head on top of the aggregated bag representation.
+- [x] Ensure the model can return raw attention weights (both stages) for later explainability use (Phase 11).
+- [x] Produce an architecture diagram covering: instance feature extraction → attention stage 1 → attention stage 2 → weighting → aggregation → bag representation → classification head.
+- [x] Write architecture documentation explaining the mathematical formulation of both attention mechanisms.
+- [x] Implement unit tests confirming attention weight output shapes match instance counts per bag.
+
+### Progress Note (2026-09-19)
+- **2026-09-19 — Phase 8 Dual Attention MIL Implemented & Validated (uncommitted — awaiting owner review/commit authorization).** Owner-locked design executed exactly (planning report + static sanity check + owner-approved +16 parameter-count erratum): **Stage 1** SE-style channel attention per instance `c = σ(W2(ReLU(W1(h))))`, W1 128→16 / W2 16→128 with biases, r=16 (D-D), `h̃ = c ⊙ h` — **4,240 params**; **Stage 2** the UNMODIFIED Phase 7 `SingleAttentionAggregator` reused by composition over h̃ — 16,640 params; aggregation `z = Σ aᵢh̃ᵢ` ∈ R^128; classifier `Linear(128→1)` raw logit — 129 params; **full model 184,545 trainable** (trunk 163,536; head excluding trunk 21,009; state-dict 185,141 elements incl. 596 BN buffers, reported separately). Fresh init seed 20260918 (D-C; no B1/B3/B4/pretrained weights); dynamic/list primary path + masked-padded convenience path (−inf logits ⇒ exactly-zero masked attention; fully-masked bag raises; equivalence verified to 1e-5 across logits/z/attention/gates); both attention families (aᵢ, cᵢ) returned for Phase 11. Validation: `tests/test_phase8_dual_attention.py` TDA-01…14 **14/14 PASS** — incl. **TDA-11 ablation guard** (neutralizing stage 2 changes attention ≥ measured 3e-5 vs 1e-9 float noise; ×50-amplified stage 2 changes attention+z; stage-1 gates→~0 collapses z; weights restored bitwise — genuine dual attention proven, not attention-in-name-only), **TDA-12** (c ≡ 1 reduces the model EXACTLY to the Phase 7 ABMIL path — Phase 7 is the uniform-gate special case), **TDA-10** (locked counts asserted mechanically), TDA-14 authorized train-only smoke (8 bags/146 instances incl. the 14-instance bag; joint forward→unweighted BCEWithLogitsLoss→backward→one Adam step with trunk+stage-1 grads; frozen-path temp-dir cache write→read bitwise; temp artifacts deleted). Full regressions re-run green: Phase 1 **11/11** · Phase 2 **11/11** · Phase 3 **13/13** · Phase 4 **11/11** · Phase 5 **11/11** · Phase 5.5 **19/19** · Phase 6 **16/16** · Phase 7 **15/15**. Deliverables: `src/mil/dual_attention.py`, `src/models/dual_attention_mil.py` (+ `src/models/__init__.py`), `configs/dual_attention_config.yaml`, `tests/test_phase8_dual_attention.py`, `reports/phase8_architecture.md`. Guards: V-11/V2-11 whitelists extended by exactly the two authorized Phase 8 files; **V6B-17 updated by explicit owner decision** (its Phase-6-era `src/models/ must not exist` future-guard collided with the approved roadmap placement — file-level exemption for exactly `__init__.py` + `dual_attention_mil.py`, any other file still fails; all other V6B-17 protections untouched). Integrity: frozen test manifest sha256 `959f1cd3…714112b74` unchanged; B1 md5 `cbf558ba…` / B4 md5 `ef3fb5a8…` byte-identical; Phase 7 modules zero-modified (`git diff` empty); Phase 6 artifacts untouched; state `b1/b3/b4: frozen, test: evaluated` unchanged; no persistent Phase 8 cache created. Recorded-not-executed training protocol (D-B/D-G): unweighted BCEWithLogitsLoss, Adam lr 1e-3, max 20 epochs, patience 5 on validation bag ROC-AUC, threshold 0.5 fixed; staged Stage A (frozen trunk, cache allowed) / Stage B (joint, cache forbidden) deferred to the later authorized experiment phase. Limitations: infrastructure phase — no performance evidence exists; attention-vs-mean-pooling benefit untested; attention weights are model attributions, NOT clinical explanations. No MRI/cross-modal code; test split never accessed.
 
 ### Files / Modules
 - `src/mil/dual_attention.py`
