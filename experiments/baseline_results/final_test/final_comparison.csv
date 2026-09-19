@@ -1,0 +1,4 @@
+model,evaluation_level,accuracy,sensitivity,specificity,precision,recall,f1,roc_auc,pr_auc,tp,tn,fp,fn,validation_roc_auc_for_context_only
+B1_simple_cnn,image,0.613333,0.827795,0.406977,0.573222,0.827795,0.677379,0.717753,0.729899,548,280,408,114,0.867217 (validation)
+B3_bag_aggregation,bag,0.589041,0.833333,0.418605,0.500000,0.833333,0.625000,0.742636,0.709389,25,18,25,5,0.867217 (validation)
+B4_meanpool_mil,bag,0.780822,0.566667,0.930233,0.850000,0.566667,0.680000,0.762791,0.785271,17,40,3,13,0.833458 (validation)

@@ -1,0 +1,112 @@
+# Phase 6 — Baseline Deep Learning Configuration (owner-approved scope)
+# Project: Predicting Breast Cancer from Ultrasound Images with Cross-Modal
+#          Validation using Dual Attention Multiple Instance Learning
+# Roadmap: PROGRESS.md Phase 6 "Baseline Deep Learning Models".
+#
+# Owner decisions (2026-09-18): implement B1 + B3 + B4; B2 ResNet18 DEFERRED
+# (no pretrained/ImageNet weights anywhere); CPU-only (no CUDA); seed fixed.
+
+config:
+  version: "1.0.0"
+  created: "2026-09-18"
+  seed: 20260918                # global seed: python random / numpy / torch
+  device: "cpu"                 # CPU-only by policy; CUDA is never enabled
+  num_workers: 0                # deterministic CPU training (Windows-safe)
+
+data:
+  # The Phase 5.5 bag dataset (src/mil/bag_dataset.py) is authoritative for
+  # bag construction; it consumes the frozen Phase 4 manifests itself.
+  manifests:
+    train: "data/manifests/train_split.csv"
+    validation: "data/manifests/val_split.csv"
+    test: "data/manifests/test_split.csv"
+  frozen_test_sha256: "959f1cd3d9f719195ac31af1a586d7c84824af1e23698ec7616c376714112b74"
+  expected_counts:
+    train: {bags: 349, instances: 6327}
+    val:   {bags: 74, instances: 1339}
+    test:  {bags: 73, instances: 1350}
+  label_map: {benign: 0, malignant: 1}   # documented convention (Phase 5.5)
+  train_augmentation:
+    policy: "horizontal_flip p=0.5, TRAIN SPLIT ONLY, applied on the fly via the Phase 5 pipeline.augment() API"
+    val_augmentation: "none"
+    test_augmentation: "none"
+  preprocessing:
+    config: "configs/preprocessing_config.yaml"
+    version: "1.0.0"
+    pipeline_version: "1.0.1"
+    normalization_source: "train-split statistics computed in Phase 5 (0.316515 / 0.245010); the Phase 5.5 loader already applies them — models NEVER re-normalize or recompute statistics"
+
+b1_simple_cnn:
+  description: "B1 — image-level CNN baseline (instance-level training with the bag label as the instance target)"
+  input_shape: [1, 224, 224]
+  channels: [24, 48, 96, 128]
+  dropout: 0.3
+  pool: "GlobalAveragePooling2D"
+  output: "one raw binary logit per image"
+  loss: "BCEWithLogitsLoss"
+  optimizer: "Adam"
+  learning_rate: 0.001
+  max_epochs: 20
+  batch_size: 32
+  early_stopping:
+    metric: "bag_roc_auc"        # validation BAG ROC-AUC (B3 aggregation of B1)
+    mode: "max"
+    patience: 5
+    restore_best: true
+  threshold: 0.5                 # fixed; never tuned on test
+  checkpoint: "model/baselines/b1_simple_cnn/best.pt"
+  artifacts: "experiments/baseline_results/b1"
+
+b3_bag_aggregation:
+  description: >
+    B3 — bag-level aggregation of the FROZEN B1 checkpoint (no new network,
+    no retraining): per-instance sigmoid -> mean over the bag's instances ->
+    threshold. Threshold is the fixed 0.5 default; validation may be used to
+    verify it before the single test evaluation, but test tuning is forbidden.
+  inherits: "b1_simple_cnn/best.pt"
+  aggregation: "mean of instance probabilities (bags never mixed)"
+  threshold: 0.5
+  artifacts: "experiments/baseline_results/b3"
+
+b4_meanpool_mil:
+  description: >
+    B4 — attention-free MEAN-pooling MIL baseline; training unit = BAG;
+    independent model trained from scratch (never uses B1 weights or
+    predictions). Deliberately NOT Dual Attention MIL.
+  input_shape: [1, 224, 224]
+  channels: [24, 48, 96, 128]
+  embed_dim: 128
+  dropout: 0.3
+  aggregation: "masked MEAN over instance embeddings -> Linear(128->1)"
+  loss: "BCEWithLogitsLoss"
+  optimizer: "Adam"
+  learning_rate: 0.001
+  max_epochs: 20
+  early_stopping:
+    metric: "bag_roc_auc"        # validation bag ROC-AUC
+    mode: "max"
+    patience: 5
+    restore_best: true
+  threshold: 0.5
+  checkpoint: "model/baselines/b4_meanpool_mil/best.pt"
+  artifacts: "experiments/baseline_results/b4"
+
+b2_transfer_learning:
+  status: "DEFERRED by owner decision 2026-09-18"
+  pretrained_weights: "NOT ALLOWED / NOT USED (no ImageNet download)"
+  note: "No B2 module, config section beyond this marker, or placeholder implementation exists."
+
+artifacts:
+  checkpoints_dir: "model/baselines"
+  experiments_dir: "experiments/baseline_results"
+  checkpoint_tracking: "gitignored (*.pt/*.pth); reproducible from seed 20260918 + this config + the frozen data"
+  gitignored: true
+
+reproducibility:
+  seeding: "python random + numpy + torch (and per-epoch generators) seeded from seed=20260918"
+  determinism_note: >
+    CPU torch is configured with deterministic algorithms; training shuffles
+    via an explicitly seeded torch.Generator permutation (never filesystem
+    order). Residual nondeterminism: none observed for these CPU ops; the
+    seeded short-run check (Phase 6 test 14) is the executable proof.
+  shuffle: "explicit seeded permutation each epoch (dataloader order is NOT relied upon)"

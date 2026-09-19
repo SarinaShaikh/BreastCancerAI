@@ -1,0 +1,17 @@
+# BreastCancerAI — pinned runtime/development dependencies
+# Created 2026-09-18 (Phase 6 dependency prerequisite; owner-approved).
+# Environment: Python 3.13.9, Windows, CPU-only (no CUDA packages by policy).
+# Install: python -m pip install -r requirements.txt
+#
+# Existing project dependencies (in use since Phase 1):
+numpy==2.5.3
+Pillow==12.3.0
+PyYAML==6.0.3
+
+# Phase 6 baselines (owner-approved 2026-09-18; B2 deferred, no pretrained
+# weight downloads; torchvision required for model tooling):
+torch==2.14.0
+torchvision==0.29.0
+
+# Metrics (accuracy/sensitivity/specificity/precision/recall/F1/ROC-AUC/PR-AUC):
+scikit-learn==1.9.1

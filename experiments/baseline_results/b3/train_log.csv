@@ -1,0 +1,2 @@
+event,b1_checkpoint,b1_epoch,aggregation,threshold
+b3_inherits_frozen_b1,model\baselines\b1_simple_cnn\best.pt,4,mean of instance probabilities (bags never mixed),0.5

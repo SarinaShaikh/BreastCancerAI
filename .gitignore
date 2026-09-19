@@ -28,3 +28,15 @@ model/da_mil/weights/
 # Deterministic cache metadata (per-split provenance.csv + cache_summary.json)
 # IS tracked; only the image PNGs are ignored.
 data/processed/*/*.png
+
+# Phase 6: the training decode cache (experiments/baseline_results/_cache/*.npy,
+# ~1.27 GB) is derived data regenerable byte-identically from the Phase 5 cache
+# + the frozen manifests + seed 20260918; only experiment records are tracked.
+experiments/baseline_results/_cache/
+
+# Phase 6 scratch: per-epoch console logs and the temporary one-epoch training
+# runner. Their authoritative content is preserved in the committed experiment
+# artifacts (train_log.csv / metrics.json); the raw scratch is regenerable
+# session output, not evidence.
+/_p6_*.log
+/_p6_b4_epoch_tmp.py
