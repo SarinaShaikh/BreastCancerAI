@@ -72,8 +72,8 @@ Phase 3: 100% — Complete (2026-09-18; bag definition documented; bag manifest 
 Phase 4: 100% — Complete (2026-09-18; leakage-free group-level split; test set frozen; validation 11/11 PASS)
 Phase 5: 100%
 Phase 5.5: 100% — Complete (2026-09-18; NEW bag-loader interface section, added by owner decision; validation 19/19 PASS)
-Phase 6: 90% — B1/B3/B4 implemented, trained (validation-only selection), and STEP G single test evaluation complete (2026-09-19); pending owner review, commit authorization, and the V-11/V2-11 boundary-whitelist decision (see Phase 6 milestone entry)
-Phase 7: 0%
+Phase 6: 100% — Complete (2026-09-19; committed `35570e7` and pushed; V-11/V2-11 resolved by owner-authorized minimal whitelist; STEP G executed exactly once; b1/b3/b4 frozen, test evaluated)
+Phase 7: 90% — MIL pipeline implemented and validated 2026-09-19: instance adapter (thin layer over Phase 5.5 loader), fresh 128-d trunk extractor (freeze/train modes), leakage-safe embedding cache, single-attention ABMIL + Linear(128→1) head; Phase 7 suite 15/15 PASS; train-only smoke test (8 bags/146 instances, joint backward + frozen cache round-trip) PASS; all regressions green; uncommitted — awaiting owner review/commit authorization. No training experiment, no test access, no performance claims (D4).
 Phase 8: 0%
 Phase 9: 0%
 Phase 10: 0%
@@ -667,7 +667,7 @@ Phase 5 complete. — Deliverables: `src/preprocessing/pipeline.py` (v1.0.1), `s
 
 # Phase 7 — Multiple Instance Learning Pipeline
 
-**Status:** [ ] Not Started
+**Status:** [x] Complete (2026-09-19 — infrastructure implemented, tested 15/15, smoke test passed; uncommitted — awaiting owner review/commit authorization; NO training experiment, NO test access, NO performance claims per owner decision D4)
 
 ### Objective
 Implement the general MIL pipeline infrastructure (feature extraction → instance embeddings → aggregation → classification) that Phase 8's Dual Attention model will build upon.
@@ -679,14 +679,14 @@ A robust, correctly implemented MIL infrastructure — especially variable bag-s
 Phase 3 (bag definition) and Phase 6 (baseline feature extractor candidates) complete.
 
 ### Tasks
-- [ ] Implement instance generation from bags per the Phase 3 definition.
-- [ ] Implement/select a feature extractor (CNN backbone) for instance embeddings.
-- [ ] Implement embedding storage/caching for efficiency.
-- [ ] Implement a basic attention-based aggregation mechanism (single attention, as a stepping stone toward dual attention).
-- [ ] Implement bag representation construction from aggregated instance embeddings.
-- [ ] Implement classification head for bag-level prediction.
-- [ ] Implement correct handling of variable numbers of instances per bag (padding/masking or dynamic batching).
-- [ ] Document: bag construction method, instances-per-bag statistics, feature extractor used, embedding dimensionality, aggregation method, classification head architecture.
+- [x] Implement instance generation from bags per the Phase 3 definition.
+- [x] Implement/select a feature extractor (CNN backbone) for instance embeddings.
+- [x] Implement embedding storage/caching for efficiency.
+- [x] Implement a basic attention-based aggregation mechanism (single attention, as a stepping stone toward dual attention).
+- [x] Implement bag representation construction from aggregated instance embeddings.
+- [x] Implement classification head for bag-level prediction.
+- [x] Implement correct handling of variable numbers of instances per bag (padding/masking or dynamic batching).
+- [x] Document: bag construction method, instances-per-bag statistics, feature extractor used, embedding dimensionality, aggregation method, classification head architecture.
 
 ### Files / Modules
 - `src/mil/instance_generation.py`
@@ -698,14 +698,17 @@ Phase 3 (bag definition) and Phase 6 (baseline feature extractor candidates) com
 - Working, tested MIL pipeline capable of handling the dataset's actual bag-size distribution.
 
 ### Validation Checks
-- [ ] Unit test: variable bag sizes processed without shape errors.
-- [ ] Unit test: forward pass produces correctly shaped bag-level output.
+- [x] Unit test: variable bag sizes processed without shape errors.
+- [x] Unit test: forward pass produces correctly shaped bag-level output.
 
 ### Exit Criteria
-- [ ] MIL pipeline runs end-to-end on a sample of the training split without errors.
+- [x] MIL pipeline runs end-to-end on a sample of the training split without errors.
 
 ### Potential Issues / Risks
 - Very small bags (e.g., single-instance) may degrade the value of attention-based aggregation — document if this occurs.
+
+### Progress Note (2026-09-19)
+- **2026-09-19 — Phase 7 MIL Pipeline Implemented & Validated (uncommitted — awaiting owner review/commit authorization).** Owner-approved decisions executed: D0 `src/mil/instance_generation.py` is a **thin adapter** over the authoritative Phase 5.5 `UltrasoundBagDataset` (no bag redefinition/grouping/identifier fabrication; test split rejected; seeded deterministic sampling helper); D1 fresh random trunk extractor `src/mil/feature_extractor.py` (seed 20260918; exact implemented Phase 6 trunk 24→48→96→128 + GAP → 128-d; **channels corrected from the instruction's 16/32/64/128 draft to match the implemented B1/B4 architecture** — see report §7; no pretrained/B1/B4 weights; freeze_trunk True/False verified: frozen ⇒ no trunk grads, joint ⇒ grads propagate); D3 leakage-safe embedding cache (SHA-256 content-hash manifest keys incl. weights hash/preprocessing+pipeline versions/split manifest SHA/frozen test SHA; frozen-extractor-only writes, trainable writes rejected; provenance.csv rows trace every embedding to instance md5; no mtime-based validity; no test cache). Aggregation `src/mil/aggregation.py`: non-gated single-attention ABMIL (u=tanh(Vh+b), s=wᵀu, softmax within each bag only, z=Σaᵢhᵢ) with dynamic/list primary path + masked-padded convenience path (masked logits −inf ⇒ exactly-zero weights; padded ≡ dynamic, T5); 1-instance bag ⇒ weight exactly 1.0 (robustness; no such bags exist in data); classifier Linear(128→1) raw logit, BCEWithLogitsLoss-compatible, no threshold logic. Full pipeline 180,305 trainable params (extractor 163,536 + attention 16,640 + head 129). Smoke test (D4: infrastructure only — NO performance claim): deterministic train-only sample, 8 bags / 146 instances incl. the 14-instance train bag; joint mode forward→loss→backward→one Adam step with trunk gradients verified; frozen mode cache write→read bitwise round-trip→finite logits. Validation: `tests/test_phase7_mil_pipeline.py` T1–T15 **15/15 PASS** (incl. T9 bitwise-deterministic inference, T12 cache trainable-rejection, T15 boundary scan distinguishing CNN MaxPool2d from max-pooling-as-aggregation and banning dual/gated/transformer/cross-bag attention + top-k/max aggregation); full regressions re-run green: Phase 1 **11/11** · Phase 2 **11/11** · Phase 3 **13/13** · Phase 4 **11/11** · Phase 5 **11/11** · Phase 5.5 **19/19** · Phase 6 **16/16**. Integrity: frozen test manifest sha256 `959f1cd3…714112b74` unchanged; B1 md5 `cbf558ba…` / B4 md5 `ef3fb5a8…` byte-identical; Phase 6 experiment artifacts untouched; state machine `b1/b3/b4: frozen, test: evaluated` unchanged. Deliverables: `src/mil/{instance_generation,feature_extractor,aggregation}.py`, `tests/test_phase7_mil_pipeline.py`, `reports/phase7_mil_pipeline.md`; V-11/V2-11 whitelists extended to exactly the three authorized Phase 7 modules. Limitations: research-prototype infrastructure only — no performance evidence, no clinical validity claims; attention-vs-mean-pooling benefit untested (deferred with Phase 8/9 authorization); cache implemented/tested but not persisted at scale (no authorized consumer yet). No Dual Attention, gated attention, transformer, MRI/cross-modal code; test split never accessed.
 
 ---
 
