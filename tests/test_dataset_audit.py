@@ -291,6 +291,11 @@ def v11():
         # Phase 10 (owner-authorized): evaluation-only ROC/PR curve helpers;
         # classification metrics remain delegated to src/training/metrics.py.
         "src/evaluation/metrics.py",
+        # Phase 11 (owner-authorized): explainability modules — frozen-checkpoint
+        # attention visualization + input-gradient Grad-CAM; eval/no_grad only,
+        # train/val splits only, no training/optimization code.
+        "src/explainability/attention_visualization.py",
+        "src/explainability/gradcam.py",
     }
     for py in sorted((REPO / "src").rglob("*.py")):
         if py.relative_to(REPO).as_posix() in phase6_approved:
