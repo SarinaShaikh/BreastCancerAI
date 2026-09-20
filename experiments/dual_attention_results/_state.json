@@ -1,0 +1,75 @@
+{
+  "seed": 20260918,
+  "da_stage_b": "frozen",
+  "test": "evaluated",
+  "history": [
+    {
+      "step": "da_stage_b_chunk",
+      "info": {
+        "paused": true,
+        "epochs_run": 1,
+        "next_epoch": 2,
+        "total_epochs": 20
+      }
+    },
+    {
+      "step": "da_stage_b_chunk",
+      "info": {
+        "paused": true,
+        "epochs_run": 2,
+        "next_epoch": 3,
+        "total_epochs": 20
+      }
+    },
+    {
+      "step": "da_stage_b_chunk",
+      "info": {
+        "paused": true,
+        "epochs_run": 3,
+        "next_epoch": 4,
+        "total_epochs": 20
+      }
+    },
+    {
+      "step": "da_stage_b_chunk",
+      "info": {
+        "paused": true,
+        "epochs_run": 4,
+        "next_epoch": 5,
+        "total_epochs": 20
+      }
+    },
+    {
+      "step": "da_stage_b_chunk",
+      "info": {
+        "paused": true,
+        "epochs_run": 5,
+        "next_epoch": 6,
+        "total_epochs": 20
+      }
+    },
+    {
+      "step": "da_stage_b_chunk",
+      "info": {
+        "paused": true,
+        "epochs_run": 6,
+        "next_epoch": 7,
+        "total_epochs": 20
+      }
+    },
+    {
+      "step": "da_stage_b_train",
+      "info": {
+        "best_epoch": 2,
+        "best_val_bag_roc_auc": 0.5723930982745686,
+        "epochs_run": 7,
+        "stopped_early": true
+      }
+    },
+    {
+      "step": "da_stage_b_test_eval",
+      "frozen_test_sha256_verified": true,
+      "checkpoint_path": "C:\\Users\\HP\\Documents\\Project\\BreastCancerAI\\model\\dual_attention\\da_stage_b\\best.pt"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "experiment": "da_stage_b",
+  "seed": 20260918,
+  "best_epoch": 2,
+  "best_validation_bag_roc_auc": 0.5723930982745686,
+  "epochs_run": 7,
+  "stopped_early": true,
+  "threshold": 0.5,
+  "threshold_tuned": false,
+  "test_evaluated": false,
+  "trainable_parameters": 184545,
+  "state_dict_elements": 185141
+}

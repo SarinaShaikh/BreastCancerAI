@@ -1,0 +1,12 @@
+{
+  "source_commit": "f39b7cd0bb7d7acb149ba7ba6bf6f8c6b299b5f7",
+  "manifest_hashes": {
+    "train_split.csv": "72b82fa653dadf2fb72800555acf673420ef14941d8f827d168fd79c0a7259f0",
+    "val_split.csv": "c57ddc7defb34e677f9acbfd1b1a197ddf7379f3dfce739ee23bd9e6bdf12dca",
+    "test_split.csv": "959f1cd3d9f719195ac31af1a586d7c84824af1e23698ec7616c376714112b74"
+  },
+  "frozen_test_sha256": "959f1cd3d9f719195ac31af1a586d7c84824af1e23698ec7616c376714112b74",
+  "preprocessing_version": "1.0.0",
+  "pipeline_version": "1.0.1",
+  "inherited_checkpoint": null
+}

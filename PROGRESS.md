@@ -75,7 +75,7 @@ Phase 5.5: 100% — Complete (2026-09-18; NEW bag-loader interface section, adde
 Phase 6: 100% — Complete (2026-09-19; committed `35570e7` and pushed; V-11/V2-11 resolved by owner-authorized minimal whitelist; STEP G executed exactly once; b1/b3/b4 frozen, test evaluated)
 Phase 7: 100% — Complete (2026-09-19; committed `8fabaa1` and pushed; 15/15 + smoke PASS; V-11/V2-11 whitelists extended by owner authorization)
 Phase 8: 90% — Dual Attention MIL implemented and validated 2026-09-19 (locked design D-A…D-G): Stage-1 SE channel attention (r=16, 4,240 params) → Stage-2 instance attention (Phase 7 ABMIL reused unchanged, 16,640) → Linear(128→1) raw logit (129); full model 184,545 trainable (185,141 state-dict elements, owner-approved +16 erratum applied); Phase 8 suite TDA-01…14 **14/14 PASS** incl. ablation guard (genuine dual attention proven), uniform-gate reduction to Phase 7 ABMIL, locked parameter assertions, and train-only smoke (8 bags/146 instances, joint backward + temp-cache round-trip); all regressions green; uncommitted — awaiting owner review/commit authorization. NO training, NO test access, NO persistent cache, NO performance claims (D-G).
-Phase 9: 0%
+Phase 9: 90% — E1 `da_stage_b` trained + single final test evaluation performed (held-out reporting only; no E2, no MRI/cross-modal); artifacts written to `experiments/dual_attention_results/da_stage_b/` + `model/dual_attention/da_stage_b/best.pt`; report `reports/phase9_training.md`.
 Phase 10: 0%
 Phase 11: 0%
 Phase 12: 0%
@@ -761,7 +761,9 @@ Phase 7 complete.
 
 # Phase 9 — Model Training, Optimization & Experiment Tracking
 
-**Status:** [ ] Not Started
+**Status:** [x] E1 `da_stage_b` training complete; test evaluation PENDING.
+
+
 
 ### Objective
 Train the Dual Attention MIL model (and re-confirm baselines under identical conditions) using a reproducible, properly tracked training process.
@@ -789,21 +791,28 @@ Phase 6 and Phase 8 complete.
 - `configs/training_config.yaml`
 - `experiments/logs/`
 - `checkpoints/`
-- `reports/phase9_training_report.md`
+- `reports/phase9_training.md` (generated; validation results only; test evaluation NOT performed)
 
 ### Expected Outputs
-- Trained model checkpoints for all baselines and the Dual Attention MIL model.
-- Full experiment logs.
+- E1 `da_stage_b` checkpoint + artifacts at `experiments/dual_attention_results/da_stage_b/`.
+- `reports/phase9_training.md` (training/validation only).
 
 ### Validation Checks
 - [ ] Confirm best-model selection logic never references test-set metrics.
 - [ ] Confirm reproducibility by re-running one experiment and comparing results within expected variance.
 
 ### Exit Criteria
-- [ ] All models trained, logged, and checkpointed; best models selected via validation performance.
+- [x] E1 `da_stage_b` trained under the locked protocol (fresh init, seed 20260918, Adam lr 1e-3, unweighted BCEWithLogitsLoss, max 20 epochs, patience 5 on validation bag ROC-AUC, threshold 0.5 fixed, one optimizer step per bag, seeded bag permutation, train-only horizontal flip p=0.5, deterministic/unaugmented validation, bit-exact chunk-resume). Best epoch 2 @ validation bag ROC-AUC 0.5723930982745686; early stopping triggered at epoch 7 (patience 5/5); best weights restored to `model/dual_attention/da_stage_b/best.pt` (md5 `258710649fb0e6979f64fc1e7ccfc28f`).
+- [x] Single final frozen test evaluation performed exactly once after E1 training completion (held-out reporting only; threshold fixed at 0.5, never tuned; test results not used for model selection). Test metrics independently recomputed from the persisted `test_predictions.csv` and verified to match the driver output to <1e-9.
+- [ ] E2 / `da_stage_a` NOT run (not authorized).
+- [ ] MRI / cross-modal validation NOT started.
+- [ ] Dual Attention checkpoint selection and early stopping used validation only.
+- [ ] Reproducibility: seed 20260918 recorded in `experiments/dual_attention_results/da_stage_b/seed.txt`; environment in `env.txt`; provenance in `provenance.json`; config snapshot in `config.yaml`; full epoch history in `train_log.csv`.
 
 ### Potential Issues / Risks
 - Class imbalance severity (to be known from Phase 1) may require more aggressive handling than initially planned.
+
+**Current Phase 9 status (2026-09-20):** E1 complete. Test metrics (bag-level): ROC-AUC 0.5302325581395348, PR-AUC 0.4709920889816891, accuracy 0.589041095890411, sensitivity 0.4666666666666667, specificity 0.6744186046511628, precision 0.5, recall 0.4666666666666667, F1 0.4827586206896552, confusion matrix TP=14/TN=29/FP=14/FN=16, probability range [0.3443276286125183, 0.6819376945495605]. Descriptive frozen-baseline comparison (read-only; no winner declared): B1 image ROC-AUC 0.7178, B3 bag ROC-AUC 0.7426, B4 bag ROC-AUC 0.7628. Driver state: `da_stage_b: frozen`, `test: evaluated`. No E2/MRI/Phase 10 work performed. No retraining. No test evaluation rerun.
 
 ---
 

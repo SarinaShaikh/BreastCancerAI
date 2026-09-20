@@ -1,0 +1,31 @@
+experiment:
+  id: da_stage_b
+  seed: 20260918
+  initialization: fresh random (owner decision O3/D-C; no B1/B3/B4/E2/pretrained weights)
+  artifacts: experiments/dual_attention_results/da_stage_b
+  chunk_state: experiments/dual_attention_results/da_stage_b_chunk_state.pt
+  checkpoint: model/dual_attention/da_stage_b/best.pt
+  state_file: experiments/dual_attention_results/_state.json
+training:
+  optimizer: Adam
+  learning_rate: 0.001
+  loss: BCEWithLogitsLoss (unweighted)
+  max_epochs: 20
+  early_stopping:
+    monitor: validation bag ROC-AUC
+    patience: 5
+    selection_rule: strict improvement (> current best)
+    restore: best validation checkpoint at completion
+  threshold: 0.5
+  batching: one optimizer step per bag (349 steps/epoch)
+  augmentation: train-only horizontal flip p=0.5 (per-instance stream, seed+2)
+  validation: deterministic, unaugmented, materialized once
+  chunking: detached 1-epoch chunks, bit-exact resume
+model:
+  architecture: 'Phase 8 DualAttentionMIL (locked): trunk 24->48->96->128 + GAP ->
+    128-d; stage-1 SE channel attention r=16; stage-2 Phase 7 ABMIL; Linear(128->1)
+    raw logit'
+  trainable_parameters: 184545
+  state_dict_elements: 185141
+seed: 20260918
+initialization: fresh random (owner decision O3/D-C; no B1/B3/B4/E2/pretrained weights)

@@ -285,6 +285,9 @@ def v11():
         "src/mil/aggregation.py",
         "src/mil/dual_attention.py",
         "src/models/dual_attention_mil.py",
+        # Phase 9 (owner-authorized): the bag-level trainer for E1, a
+        # structural mirror of train_b4 reusing train_baseline helpers.
+        "src/training/train_dual_attention.py",
     }
     for py in sorted((REPO / "src").rglob("*.py")):
         if py.relative_to(REPO).as_posix() in phase6_approved:
