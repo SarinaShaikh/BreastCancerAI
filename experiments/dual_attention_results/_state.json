@@ -69,7 +69,7 @@
     {
       "step": "da_stage_b_test_eval",
       "frozen_test_sha256_verified": true,
-      "checkpoint_path": "C:\\Users\\HP\\Documents\\Project\\BreastCancerAI\\model\\dual_attention\\da_stage_b\\best.pt"
+      "checkpoint_path": "model/dual_attention/da_stage_b/best.pt"
     }
   ]
 }

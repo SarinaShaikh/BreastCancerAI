@@ -761,7 +761,7 @@ Phase 7 complete.
 
 # Phase 9 — Model Training, Optimization & Experiment Tracking
 
-**Status:** [x] E1 `da_stage_b` training complete; test evaluation PENDING.
+**Status:** [x] E1 `da_stage_b` training complete; single final test evaluation complete; E2 `da_stage_a` not run.
 
 
 
