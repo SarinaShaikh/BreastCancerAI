@@ -288,6 +288,9 @@ def v11():
         # Phase 9 (owner-authorized): the bag-level trainer for E1, a
         # structural mirror of train_b4 reusing train_baseline helpers.
         "src/training/train_dual_attention.py",
+        # Phase 10 (owner-authorized): evaluation-only ROC/PR curve helpers;
+        # classification metrics remain delegated to src/training/metrics.py.
+        "src/evaluation/metrics.py",
     }
     for py in sorted((REPO / "src").rglob("*.py")):
         if py.relative_to(REPO).as_posix() in phase6_approved:

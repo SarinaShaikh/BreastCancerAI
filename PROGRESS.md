@@ -76,7 +76,7 @@ Phase 6: 100% — Complete (2026-09-19; committed `35570e7` and pushed; V-11/V2-
 Phase 7: 100% — Complete (2026-09-19; committed `8fabaa1` and pushed; 15/15 + smoke PASS; V-11/V2-11 whitelists extended by owner authorization)
 Phase 8: 90% — Dual Attention MIL implemented and validated 2026-09-19 (locked design D-A…D-G): Stage-1 SE channel attention (r=16, 4,240 params) → Stage-2 instance attention (Phase 7 ABMIL reused unchanged, 16,640) → Linear(128→1) raw logit (129); full model 184,545 trainable (185,141 state-dict elements, owner-approved +16 erratum applied); Phase 8 suite TDA-01…14 **14/14 PASS** incl. ablation guard (genuine dual attention proven), uniform-gate reduction to Phase 7 ABMIL, locked parameter assertions, and train-only smoke (8 bags/146 instances, joint backward + temp-cache round-trip); all regressions green; uncommitted — awaiting owner review/commit authorization. NO training, NO test access, NO persistent cache, NO performance claims (D-G).
 Phase 9: 90% — E1 `da_stage_b` trained + single final test evaluation performed (held-out reporting only; no E2, no MRI/cross-modal); artifacts written to `experiments/dual_attention_results/da_stage_b/` + `model/dual_attention/da_stage_b/best.pt`; report `reports/phase9_training.md`.
-Phase 10: 0%
+Phase 10: 100% — Complete (2026-09-21; analysis of existing frozen final predictions — final evaluations NOT rerun; report corrected and verified against frozen artifacts; tests 21/21 PASS; uncommitted — awaiting owner commit authorization)
 Phase 11: 0%
 Phase 12: 0%
 Phase 13: 0%
@@ -818,7 +818,9 @@ Phase 6 and Phase 8 complete.
 
 # Phase 10 — Evaluation, Error Analysis & Robustness Testing
 
-**Status:** [ ] Not Started
+**Status:** [x] Complete (2026-09-21) — analysis of existing frozen final predictions; uncommitted — awaiting owner commit authorization.
+
+- **2026-09-21 — Phase 10 Complete (uncommitted — awaiting owner commit authorization).** Analysis of the ALREADY-FROZEN final test predictions from Phase 6 (B1/B3/B4) and Phase 9 (E1); final evaluations were NOT rerun (each phase's test evaluation was executed exactly once; the Phase 9 single-evaluation guard remains active). Granularity: B1 image/instance level; B3/B4/E1 bag level; `source_group_id` is NOT a verified patient/study/lesion identifier — no patient/study-level evaluation claimed. Scope delivered: classification metrics (delegated to the authoritative `src/training/metrics.py`; no duplicated metric logic), ROC/PR curve analysis, confusion matrices at fixed threshold 0.5 (no threshold tuning), deterministic FP/FN error analysis with full provenance (bag_id/source_group_id/image_path where applicable), uncertainty analysis (fixed margin 0.1, set before inspection), class-wise summaries, model-disagreement analysis at compatible granularity only (bag-level B3/B4/E1; B1 instance predictions never equated to bag-level units), bag-size stratification (16/21/53; the single 53-instance bag explicitly flagged as statistically insufficient), source-group stratification (exploratory/descriptive only), and frozen-manifest/artifact verification. Calibration/robustness: evaluative only — no calibration parameters fit on test labels; no perturbation inference performed. Deliverables: `src/evaluation/metrics.py`, `src/evaluation/error_analysis.py`, `tests/test_phase10_evaluation.py` (21/21 PASS), `scripts/generate_phase10_figures.py`, `reports/phase10_evaluation_report.md` (owner-authorized numeric corrections applied and independently re-verified against the frozen artifacts), `reports/figures/phase10/{roc_curves,pr_curves,confusion_matrices}.png`. Guards: V-11/V2-11 whitelists extended by exactly one owner-authorized Phase 10 entry (`src/evaluation/metrics.py` — evaluation-only sklearn ROC/PR helpers); scanner logic and all other entries unchanged. Integrity: frozen test manifest sha256 `959f1cd3d9f719195ac31af1a586d7c84824af1e23698ec7616c376714112b74` unchanged; B1/B4/E1 checkpoint MD5s unchanged (`cbf558ba…`/`ef3fb5a8…`/`25871064…`); `experiments/`, `model/`, `data/` byte-identical; no retraining, no checkpoint replacement, no threshold tuning, no preprocessing or architecture modification, no MRI integration, no Phase 11+ work. All regression suites re-run green: Phase 1 11/11 · Phase 2 11/11 · Phase 3 13/13 · Phase 4 11/11 · Phase 5 11/11 · Phase 5.5 19/19 · Phase 6 16/16 · Phase 7 15/15 · Phase 8 14/14 · Phase 9 infrastructure 14/14 · Phase 10 21/21. Limitations: no verified patient/study IDs (patient/study-level claims unsupported); small test set (73 bags) → small-sample descriptive estimates only; research prototype, NOT clinical validation.
 
 ### Objective
 Evaluate all trained models on the frozen test set at the correct level(s) of granularity, using a comprehensive metric suite — not accuracy alone.
@@ -827,7 +829,7 @@ Evaluate all trained models on the frozen test set at the correct level(s) of gr
 Clinically meaningful evaluation requires sensitivity/specificity and error analysis, not just headline accuracy, especially in a class-imbalanced medical imaging context.
 
 ### Prerequisites
-Phase 9 complete; test set still frozen and unused until now.
+Phase 9 complete; the frozen test set had already been used for the authorized final evaluations in Phase 6 (B1/B3/B4) and Phase 9 (E1). Phase 10 analyzed those existing frozen predictions and did NOT rerun any final evaluation; the test set remained frozen throughout (manifest sha256 `959f1cd3d9f719195ac31af1a586d7c84824af1e23698ec7616c376714112b74` unchanged).
 
 ### Tasks
 - [ ] Determine evaluation granularity supported by the dataset (instance-level, image-level, and bag/study/patient-level as applicable per Phase 3's bag definition).
